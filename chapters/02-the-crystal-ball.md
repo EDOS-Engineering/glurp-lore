@@ -8,6 +8,8 @@ Every wizard has an instrument. Some have staffs. Some have wands. Some have ver
 
 Glurp found it at the bottom of a box of old cables, the kind of box every developer owns and nobody opens. They were looking for an adapter. They did not find the adapter. Nobody ever finds the adapter. Instead their hand closed around something cool, round and humming.
 
+![A crystal ball with three glowing rings rises from an old cardboard box of tangled cables.](../images/spot-cable-box.svg "spot-left")
+
 It was a sphere of clear glass about the size of a cabbage. Inside, three thin rings of light turned around a bright centre, each at its own speed and its own tilt. When Glurp set it on the desk, the rings sped up a little, as if glad to be out of the box.
 
 "Hullo," said Glurp, who was polite to all objects, especially ones that might be magic.
@@ -40,6 +42,8 @@ After that night the ball never left the desk. Glurp decided its three rings mea
 
 The old orks of the valley had a word for an object like this: a **glimmerstone**, a stone that sees. The glimmerstones in the old songs were dramatic things. They showed doom, and battles, and the faces of distant kings. Glurp's showed accounts.
 
+![Glurp's neighbour, a grumpy goblin with a heavy frown, stands beside their beehive while bees buzz about.](../images/spot-goblin-and-bees.svg "spot-right")
+
 "Dull," said their neighbour, a grumpy goblin who kept bees and had opinions.
 
 "Useful," said Glurp. "Dull and useful is the best kind of magic. Dramatic magic always ends with somebody's tower on fire."
@@ -53,6 +57,8 @@ For years after that, Glurp and the ball worked side by side. Glurp wrote the co
 It was a good life, careful and unhurried. Every line hand-forged, every path lit by a gentle three-ringed glow.
 
 The ball never spoke. But on nights when Glurp fell asleep with their cheek on the space bar, the rings would slow and turn softly, as if keeping watch.
+
+![Late at night Glurp has fallen asleep at their desk, cheek on the space bar, while the crystal ball glows beside them and keeps watch.](../images/02-asleep-on-the-space-bar.svg "wide")
 
 Glurp did not know yet that the small bright ring, the one about cost, was about to become the most important ring of all.
 

@@ -19,6 +19,8 @@ In the Age of Hand-Forged Code, every function was hammered out one keystroke at
 
 The code was not always pretty, but it was *theirs*. Glurp knew where every bracket lived. They knew which loop was load-bearing. They knew that `doTheThing2` was the real function and `doTheThing` was a decoy, kept only because deleting it once made the tower's lights flicker for a week.
 
+![Glurp sits at their anvil-desk, typing by hand, a screen of code beside them.](../images/spot-glurp-typing.svg "spot-right")
+
 Orks came from all over the valley with their problems.
 
 "Glurp, me cart won't sort its turnips."
@@ -29,11 +31,15 @@ Orks came from all over the valley with their problems.
 
 Glurp would sigh, put on their reading spectacles (purely decorative; ork eyes are excellent), and fix it. Slowly. Thoroughly. By hand.
 
+![Orks from the valley queue at Glurp's tower with their problems: one holds a rock that works on their rock but not their brother's, one a padlock, one a turnip from a cart that will not sort. Glurp sits at their anvil-desk in decorative spectacles, ready to fix it all by hand.](../images/01-the-valley-queue.svg "wide")
+
 The turnip one took a whole weekend and grew into a library. Glurp is still quietly proud of it.
 
 ## The slow, warm craft
 
 There was a pleasure in it. The click of the keys. The hum of the tower. The small triumphant grunt when the tests went green, which orks call a green-up. For every green-up Glurp carved a notch in the doorframe, and by the time this story begins the doorframe was more notch than frame.
+
+![A jar of friendly bugs with a blank label stands beside Sir Quackington, the rubber duck.](../images/spot-bug-jar-and-duck.svg "spot-left")
 
 On the desk sat a jar labelled **BUGS (FRIENDLY)**. It held the bugs Glurp had caught and decided not to fix, because they were, in Glurp's words, "part of the charm." Nobody else was allowed to open the jar.
 

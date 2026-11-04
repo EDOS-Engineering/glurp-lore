@@ -22,6 +22,8 @@ Glurp blinked. Then they did what any developer does when a magic orb gives them
 
 They looked at the logo. They looked at their crystal ball. They looked at the logo again.
 
+![Glurp looks from the three-ringed logo on their screen to the three rings in their crystal ball, and back again, eyebrow raised: that is not a coincidence.](../images/05-the-sign-in-the-glass.svg "wide")
+
 "Well," said Glurp, "*that's* not a coincidence."
 
 (Whether it was or not, the lore does not say. Some things a wizard is better off not knowing.)
@@ -41,6 +43,8 @@ It was exactly what their crystal ball had always done for their hand-forged cod
 They felt about three stone lighter.
 
 ## The healing
+
+![Glurp raises a wand tipped with a lime star, casting a small healing spell over their wounds.](../images/spot-glurp-wand.svg "spot-left")
 
 Seeing the wounds was one thing. Closing them was another. And so Glurp tried **Ork Meter Plus**.
 
@@ -63,6 +67,8 @@ That night Glurp finished a whole feature with an agent's help, and when they ch
 They took out their carving knife and cut a new notch in the doorframe. Then, after a moment's thought, they cut a tiny three-ringed circle next to it.
 
 On the desk, the crystal ball turned its rings slowly and contentedly. Glurp could have sworn it looked smug.
+
+![Glurp celebrates beside the notched doorframe, where a tiny three-ringed circle is carved beside the newest notch.](../images/vignette-new-notch.svg "vignette")
 
 ---
 

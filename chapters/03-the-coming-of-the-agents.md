@@ -12,6 +12,8 @@ Glurp lowered their mug. "And who checks it?"
 
 Glurp's brow descended like a portcullis.
 
+![At the tavern, Pib, a young ork with a confident haircut, holds up a sticker-covered laptop and talks about the new magic, while Glurp listens over their mug with their brow lowered like a portcullis.](../images/03-the-tavern-rumour.svg "wide")
+
 ## The new tools
 
 But the rumour did not go away. Soon every tower in the valley had a new hum in it. Orks who had never written a loop in their lives were shipping whole applications before lunch. The bee-keeping goblin built an app that tracked their bees, and then another app that tracked the first app, and then complained that their bees did not use either.
@@ -25,6 +27,8 @@ There were coding agents. Glurp tried **Claude Code** in their terminal, and **C
 ## Bewildering times
 
 It was wonderful. It was also bewildering.
+
+![Glurp shrugs, palms up and one eyebrow raised, bewildered by how fast the agents work.](../images/spot-glurp-shrugs.svg "spot-right")
 
 For one thing, the agents worked *fast*. Glurp was used to knowing where every bracket lived. Now whole files appeared and changed while they were still reading the first one. They found themself sitting back in their chair, chewing their gold drawstring tips, watching text scroll past like a waterfall.
 
@@ -49,6 +53,8 @@ Their single brow shot all the way up to their hairline (orks do not have much h
 The universe did not answer. Sir Quackington did not answer. But on the corner of the desk, the crystal ball's small inner ring flickered, bright and quick, as if it had been waiting a very long time for them to ask that exact question.
 
 Glurp did not notice. Not yet. They were too busy crawling under the desk after the last token.
+
+![A single gold token rolls away under the desk.](../images/vignette-last-token.svg "vignette")
 
 ---
 

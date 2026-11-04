@@ -6,6 +6,8 @@ Over the following weeks, Glurp kept losing tokens. Not all at once, and not in 
 
 Being a careful wizard, they started a notebook. They called it *The Book of Wounds*, which was a bit theatrical, but Glurp felt they had earned a bit of theatre. In it, they wrote down every way they caught their tokens slipping away. In the end there were five.
 
+![The Five Wounds in five panels: the Flood of log lines with one red failure and a wet sock, the Circle of an agent chasing its own loop, the Forgetful Read of one file read five times, the Avalanche of giant output tumbling down, and the Cold Hearth, a fireplace gone grey and frosty.](../images/04-the-five-wounds-strip.svg "wide")
+
 ## The First Wound: The Flood
 
 Glurp asked the agent to run their tests. The agent ran them, which was correct. The tests printed their output, which was also correct. But Glurp's test suite was very chatty. Every passing test announced itself. Every setup step said hello. Somewhere in the middle of three thousand lines of cheerful noise, one test had failed, and the agent had to read all three thousand lines to find it.
@@ -46,11 +48,15 @@ They called this **the Cold Hearth**: the cache expiring just before an expensiv
 
 ## Counting the cost
 
+![Glurp reads the Book of Wounds, a scroll of five red-marked entries, by candlelight.](../images/spot-glurp-reading.svg "spot-right")
+
 Glurp read the five wounds over by candlelight. None of them were the tools' fault, exactly. The agents were doing what agents do: reading, trying, working hard. The trouble was that nobody was *watching the coins*. No one was standing at the door, counting what went in and what came out, and saying "Oi, hang on a minute."
 
 They closed the notebook. On the corner of the desk, the crystal ball's inner ring was spinning so fast it hummed.
 
 This time, Glurp noticed.
+
+![The crystal ball hums on its stand, its inner ring spinning fast.](../images/vignette-humming-ball.svg "vignette")
 
 ---
 

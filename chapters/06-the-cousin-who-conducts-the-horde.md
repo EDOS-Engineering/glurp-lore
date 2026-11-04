@@ -18,6 +18,8 @@ Glurp worked with one agent at a time, sometimes two, side by side at their desk
 
 He lived across the valley in a long hall with a great many desks, and at every desk an agent was busy: one writing code, one reviewing it, one running tests, one writing documentation nobody would read, one fixing the tests the first one broke. In the middle of it all, on a little raised platform, stood Glorp with a baton, directing the whole thing like an orchestra.
 
+![In a long hall, agents work at desk after desk while Glorp, an indigo ork in a teal coat, stands on a raised platform with baton held high, conducting the horde, music notes floating above his head.](../images/06-the-hall-of-the-horde.svg "wide")
+
 The platform he used was called **Orkestera**, made by the very same workshop, **EDOS**, that made Ork Meter. Its motto was painted over the door of Glorp's hall in tall teal letters:
 
 **Conduct the horde.**
@@ -42,7 +44,11 @@ There was a long silence. Glorp looked at his batons. Then, very quietly, he sai
 
 Glurp smiled the slow smile of a cousin who has been waiting years to win an argument at dinner.
 
+![At family dinner Glurp points across the table at Glorp, who shrugs with a baton in hand, while Grandmother Orgle sits between them behind a stack of pancakes and keeps score on a tally board.](../images/06-the-family-dinner.svg "wide")
+
 ## A truce, sort of
+
+![Glurp walks across the valley with their crystal ball tucked under one arm, rings glowing.](../images/spot-glurp-walking.svg "spot-right")
 
 The next morning, Glurp walked across the valley with their crystal ball under their arm. They set it on the edge of Glorp's platform, and the two of them watched the horde work while the three rings turned.
 

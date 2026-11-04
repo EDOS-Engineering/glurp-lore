@@ -10,6 +10,8 @@ And Glurp is at their desk.
 
 ## What changed
 
+![Glurp's desk at night: Sir Quackington keeps watch from the top of the monitor, beside the jar of friendly bugs and a cold mug of tea.](../images/spot-desk-at-night.svg "spot-right")
+
 If you had told the Glurp of the Age of Hand-Forged Code that one day they would write most of their features alongside tireless agents, they would have dropped their mug. If you had told them that they would spend a good part of each evening reading token counts, they would have dropped the other mug too.
 
 But here they are. The agents read and write and test, quick as anything. They steer. They review. They hand-forge the bits that matter most to them. And on the corner of the desk, the crystal ball turns its three rings, counting everything that goes in, everything that comes out, and what it all costs.
@@ -35,6 +37,8 @@ Nobody knows what the next age will bring. Maybe bigger hordes. Maybe stranger a
 
 Glurp is not worried. Well, they are a little worried; they are a developer, and worrying is half the job. But they have their tools, they have their cousin across the valley (still arguing, still conducting), they have their friends in the server, and they have a ball of glass that has always, always shown them where things go.
 
+![The whole cast together in the tower: Glorp, Grandmother Orgle, the troll and the elf at the back; the bee-keeping goblin, Pib, Glurp with their token gauge, the dwarf and Sir Quackington in front; Ork Bot peeking down from above.](../images/08-curtain-call.svg "wide")
+
 They take a sip of cold tea. They make a face. They open a new session.
 
 Somewhere deep in the glass, the small inner ring glows, bright and steady.
@@ -42,6 +46,8 @@ Somewhere deep in the glass, the small inner ring glows, bright and steady.
 "Right then," says Glurp, cracking all eleven knuckles. "Let's see where it all goes."
 
 *The end. For now.*
+
+![The crystal ball glows on its stand, three rings turning.](../images/vignette-the-end.svg "vignette")
 
 ---
 

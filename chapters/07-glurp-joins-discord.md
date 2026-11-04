@@ -20,6 +20,8 @@ Glurp's brow lifted half an inch. "What kind of bot?"
 
 ## Ork Bot
 
+![Ork Bot, a small purple gremlin with lime eyes, perches on a chat window under the rafters, where Glurp's lime messages and its purple answers take turns.](../images/spot-ork-bot.svg "spot-right")
+
 Its name was **Ork Bot**, and it lived in the server like a helpful little gremlin in the rafters. You summoned it by typing `/ork`, and it answered.
 
 Glurp's first message was cautious:
@@ -44,6 +46,8 @@ What surprised Glurp most was not the bot. It was the other people.
 
 There was an elf who built websites and swore that her agent had read the same stylesheet eleven times before breakfast. There was a dwarf who ran giant data jobs and had lost a whole afternoon's tokens to one Avalanche of output. There was a troll who was very gentle, very new to programming, and asked questions so kind and so earnest that everyone in the channel went out of their way to answer.
 
+![The Discord regulars at their laptops along one long table: an elf, a dwarf, a gentle troll, Pib and Glurp, each with a chat bubble overhead, while Ork Bot sits in the rafters like a helpful gremlin.](../images/07-the-hall-of-chatter.svg "wide")
+
 They all had wounds. They all had stories. And they all, at one point or another, had asked some version of the same question Glurp asked.
 
 Glurp started answering, too. Short things at first: "Trim yer test output, it helps." "Mind the Cold Hearth after lunch." Then longer things. Diagrams drawn badly in text. Little stories from the tower.
@@ -59,6 +63,8 @@ Sometimes, very late, someone new will appear in the channel, bewildered and tok
 And Glurp, hood up, drawstring in their tusks, crystal ball glowing beside them, will type back:
 
 *It's not just you. Pull up a stool.*
+
+![Glurp waves a newcomer over to an empty stool.](../images/vignette-pull-up-a-stool.svg "vignette")
 
 ---
 

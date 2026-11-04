@@ -1,7 +1,10 @@
 name: Deploy
 
 # Publishes the storybook to lore.orkmeter.com: S3 behind CloudFront in
-# EDOS-Labs (infra/lore-site.yaml, stack glurp-lore-site in us-east-1).
+# EDOS-Labs: the bucket is stack glurp-lore-origin (infra/lore-origin.yaml,
+# us-west-2, the only region the organization allows for regional services);
+# CloudFront, ACM and the deploy role are stack glurp-lore-site
+# (infra/lore-site.yaml, us-east-1).
 # The role, bucket and distribution come from repository variables set
 # from that stack's outputs. No job environment: the role trusts the OIDC
 # subject repo:EDOS-Engineering@155857438/glurp-lore@1446009821:ref:refs/heads/main.
@@ -21,18 +24,15 @@ concurrency:
 
 jobs:
   deploy:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Build the storybook
         run: python3 scripts/build_site.py --out _site && rm -f _site/CNAME
-      - uses: aws-actions/configure-aws-credentials@v4
+      - uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
         with:
           role-to-assume: ${{ vars.LORE_DEPLOY_ROLE_ARN }}
-          aws-region: us-east-1
+          aws-region: us-west-2
       - name: Upload
         env:
           BUCKET: ${{ vars.LORE_BUCKET }}

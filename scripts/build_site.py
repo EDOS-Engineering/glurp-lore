@@ -31,7 +31,7 @@ SITE_ASSETS = ROOT / "site"
 BASE_URL = "https://lore.orkmeter.com/"
 REPO_URL = "https://github.com/EDOS-Engineering/glurp-lore"
 ORKMETER_URL = "https://orkmeter.com/"
-PLUS_URL = "https://orkmeter.com/#pricing"
+PLUS_URL = "https://orkmeter.com/billing"
 BOOK_TITLE = "The Lore and History of Glurp"
 
 MARK_SVG = (

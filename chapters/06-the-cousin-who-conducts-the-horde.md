@@ -2,23 +2,25 @@
 
 ![Glurp and their cousin Glorp, an indigo ork in teal with a baton and music notes, stand on either side of the crystal ball.](../images/06-cousin-conducts-the-horde.svg)
 
-Every ork has a cousin. Glurp's cousin was **Glorp**, and Glorp was, depending on who you asked and what time of day it was, either Glurp's dearest relation or their greatest rival.
+Every ork has a cousin. Glurp's was **Glorp**, and depending on who you asked and what time of day it was, Glorp was either Glurp's dearest relation or their greatest rival.
 
 ## Indigo and teal
 
-Glorp did not look like Glurp. Where Glurp was green as a fresh prompt, Glorp had deep **indigo** skin, like the sky an hour after sunset. Where Glurp wore a purple hoodie and brown boots, Glorp wore a long coat of **teal**, with a high collar and far too many pockets, each one holding a tiny baton.
+The two looked nothing alike. Glurp was green as a fresh prompt; Glorp was deep **indigo**, like the sky an hour after sunset. Glurp wore a purple hoodie and brown boots; Glorp wore a long **teal** coat with a high collar and far too many pockets, and out of every pocket poked a slim little stick.
 
 "Wand?" asked Glurp, the first time they saw the coat.
 
 "I conduct, this is a baton!" said Glorp grandly.
 
+He has never quite forgiven the question. Glurp has never quite stopped asking it.
+
 ## The horde
 
-Glurp worked with one agent at a time, sometimes two, side by side at their desk like a pair of apprentices. Glorp did not work that way. Glorp worked with a **horde**.
+Glurp worked with one agent at a time, sometimes two, side by side at the desk like a pair of apprentices. Glorp worked with a **horde**.
 
-He lived across the valley in a long hall with a great many desks, and at every desk an agent was busy: one writing code, one reviewing it, one running tests, one writing documentation nobody would read, one fixing the tests the first one broke. In the middle of it all, on a little raised platform, stood Glorp with a baton, directing the whole thing like an orchestra.
+He lived across the valley in a long hall full of desks, and at every desk an agent was busy. One wrote code. One reviewed it. One ran the tests. One wrote documentation nobody would read. One fixed the tests the first one broke. Pib had been right after all: there really was another one of 'em checking. In the middle of it all, on a little raised platform, stood Glorp with a baton, directing the lot like an orchestra.
 
-The platform he used was called **Orkestera**, made by the very same workshop, **EDOS**, that made Ork Meter. Its motto was painted over the door of Glorp's hall in tall teal letters:
+The platform he used was called **Orkestera**, made by the same workshop, **EDOS**, that made Ork Meter. Its motto was painted over the door of the hall in tall teal letters:
 
 **Conduct the horde.**
 
@@ -38,29 +40,29 @@ They had this argument at every family dinner. Grandmother Orgle had banned it t
 
 **Glurp:** Is it, though? Have you *counted*?
 
-There was a long silence. Glorp looked at his batons. Then, very quietly, he said: "...How would I count it?"
+There was a long silence. Glorp looked at his batons. Then, very quietly: "...How would I count it?"
 
-Glurp smiled the slow smile of a cousin who has been waiting years to win an argument at dinner.
+Glurp smiled the slow smile of a cousin who has waited years to win an argument at dinner.
 
 ## A truce, sort of
 
-The next morning, Glurp walked across the valley with their crystal ball under their arm. They set it on the edge of Glorp's platform, and the two of them watched the horde work while the three rings turned.
+The next morning Glurp walked across the valley with the crystal ball under one arm. They set it on the edge of Glorp's platform, and the two of them watched the horde work while the three rings turned.
 
-The ball showed the same wounds Glurp had found, only bigger, because a horde makes everything bigger. Forty Floods. A dozen Circles. A Forgetful Read so persistent that one agent had opened the same README nineteen times.
+The ball showed the same wounds Glurp had found at home, only bigger, because a horde makes everything bigger. Forty Floods. A dozen Circles. One Forgetful Read so devoted that a single agent had opened the same README nineteen times.
 
 Glorp's indigo face went a slightly paler indigo.
 
 "Right," he said. "Right. Fine. Ork Meter, then. For the horde."
 
-"For the horde," agreed Glurp, and they shook hands, green and indigo.
+"For the horde," agreed Glurp, and they shook on it, green hand in indigo.
 
 ## How it works now
 
-These days, Glorp conducts and Glurp counts. Orkestera keeps the horde in time; Ork Meter keeps the books. When the horde is humming along, Glorp sends a little note across the valley that says *all forty in tune, tokens under budget*, and Glurp sends back a note that says *I'll believe it when the ball shows it*.
+These days Glorp conducts and Glurp counts. Orkestera keeps the horde in time; Ork Meter keeps the books. When the hall is humming, Glorp sends a note across the valley: *all forty in tune, tokens under budget*. Glurp sends one back: *I'll believe it when the ball shows it*.
 
-They still argue at dinner. Grandmother Orgle has given up banning it. Now she just keeps score.
+They still argue at dinner. Grandmother Orgle has stopped banning it. Now she keeps score.
 
-(Currently: Glurp 14, Glorp 13, one draw over whether a stack of pancakes counts as a horde.)
+The current tally is Glurp 14, Glorp 13, and one draw over whether a stack of pancakes counts as a horde.
 
 ---
 

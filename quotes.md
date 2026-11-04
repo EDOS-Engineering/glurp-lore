@@ -16,6 +16,10 @@ The sequel. Said on first opening Ork Meter.
 
 On test logs.
 
+> "I asked it what time it was, and it gave me the history of clocks."
+
+On the Avalanche.
+
 > "Open the fridge, close it, open it again. But the fridge doesn't charge me."
 
 On reading the same file five times.
@@ -27,6 +31,10 @@ Never followed by bed.
 > "A horde, improperly conducted, is a very expensive racket."
 
 To cousin Glorp, at dinner, again.
+
+> "Wand?"
+
+First said to cousin Glorp on seeing the teal coat. Still said, mostly to annoy him.
 
 > "Have you *counted*?"
 

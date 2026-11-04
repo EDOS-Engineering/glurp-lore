@@ -10,7 +10,7 @@ Glurp was a software developer. They were also a wizard. In those days the two w
 
 ## Every line by hand
 
-In the Age of Hand-Forged Code, every function was hammered out one keystroke at a time. Glurp sat at their anvil-desk, cracked their knuckles (all eleven; nobody asks), and typed. They named their variables with care. They wrote their comments in rhyming couplets when they were in a good mood, and in grumbles when they were not. A good day looked like this:
+In the Age of Hand-Forged Code, every function was hammered out one keystroke at a time. Glurp sat at their anvil, cracked their knuckles (all eleven; nobody asks), and typed. They named their variables with care. They wrote their comments in rhyming couplets when they were in a good mood, and in grumbles when they were not. A good day looked like this:
 
 ```
 // this function does a fing
@@ -19,7 +19,7 @@ In the Age of Hand-Forged Code, every function was hammered out one keystroke at
 
 The code was not always pretty, but it was *theirs*. Glurp knew where every bracket lived. They knew which loop was load-bearing. They knew that `doTheThing2` was the real function and `doTheThing` was a decoy, kept only because deleting it once made the tower's lights flicker for a week.
 
-![Glurp sits at their anvil-desk, typing by hand, a screen of code beside them.](../images/spot-glurp-typing.svg "spot-right")
+![Glurp sits at their anvil, typing by hand, a screen of code beside them.](../images/spot-glurp-typing.svg "spot-right")
 
 Orks came from all over the valley with their problems.
 
@@ -31,7 +31,7 @@ Orks came from all over the valley with their problems.
 
 Glurp would sigh, put on their reading spectacles (purely decorative; ork eyes are excellent), and fix it. Slowly. Thoroughly. By hand.
 
-![Orks from the valley queue at Glurp's tower with their problems: one holds a rock that works on their rock but not their brother's, one a padlock, one a turnip from a cart that will not sort. Glurp sits at their anvil-desk in decorative spectacles, ready to fix it all by hand.](../images/01-the-valley-queue.svg "wide")
+![Orks from the valley queue at Glurp's tower with their problems: one holds a rock that works on their rock but not their brother's, one a padlock, one a turnip from a cart that will not sort. Glurp sits at their anvil in decorative spectacles, ready to fix it all by hand.](../images/01-the-valley-queue.svg "wide")
 
 The turnip one took a whole weekend and grew into a library. Glurp is still quietly proud of it.
 

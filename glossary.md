@@ -2,8 +2,8 @@
 
 Words heard in Glurp's tower, the valley tavern, and the Ork Meter Discord. Spellings vary. Orks are flexible about spelling.
 
-**Anvil-desk**
-: Any desk where real work happens. Usually covered in mugs.
+**Anvil**
+: An ork's desk. Any desk where real work is hammered out. Usually covered in mugs.
 
 **Avalanche, the**
 : The Fourth Wound. A single command that returns enormous output and buries the context. "Don't cat the whole log, you'll start an Avalanche."

@@ -223,6 +223,31 @@ tbody th{white-space:nowrap}
 .speech blockquote p{margin:0;color:var(--purple);font-weight:600;font-size:17px}
 .speech figcaption{padding:2px 4px 0 50px;color:var(--muted);font-size:15px}
 
+/* Glurp-isms index: grouped by chapter, each entry links to its passage. */
+.ism-group+.ism-group{margin-top:44px;padding-top:32px;border-top:2px dashed var(--line)}
+.ism-group h2{font:400 22px/1.25 var(--display);letter-spacing:-.03em;margin:0 0 22px}
+.ism-group h2 a,.ism-group h2>span{display:flex;align-items:center;gap:14px;color:var(--lime)}
+.ism-group h2 a:hover{color:#dcffb4}
+.ism-where{display:block;margin:10px 4px 0 50px;font:500 12px/1.5 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--lime)}
+.ism-where:hover{color:#dcffb4}
+.ism-near{color:var(--muted)}
+.ism-note{color:var(--muted);margin:-8px 0 22px}
+.speech:target blockquote{border-color:var(--lime)}
+
+/* A Glurp-ism arrived at from the index: a brief lime glow, then a quiet
+   bar in the margin so the line stays easy to find. */
+.prose [id^="said-"],.ism-anchor{scroll-margin-top:32px}
+.prose p:target,.prose blockquote:target{background-image:linear-gradient(var(--lime),var(--lime));background-size:6px 100%;background-repeat:no-repeat;animation:ism-glow 2.4s ease-out both}
+.prose p:target{margin-left:-20px;margin-right:-20px;padding:10px 20px}
+@keyframes ism-glow{from{background-color:rgba(196,245,138,.2)}to{background-color:transparent}}
+.prose blockquote:target{background-image:none;background-color:var(--panel-2);border-left-color:var(--lime);animation-name:ism-glow-quote}
+@keyframes ism-glow-quote{from{background-color:#2d3d27}to{background-color:var(--panel-2)}}
+.ism-back,.prose blockquote .ism-back-line{display:none}
+.ism-back{font:500 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;font-style:normal;white-space:nowrap;margin-left:6px}
+.prose p:target .ism-back{display:inline}
+.prose blockquote:target .ism-back-line{display:block;margin-top:.8em}
+.prose blockquote:target .ism-back-line .ism-back{display:inline;margin-left:0}
+
 /* Tooltip */
 .tooltip-line{position:relative;background:var(--panel-2);border:var(--border);box-shadow:4px 4px 0 var(--outline);padding:14px 18px;color:var(--purple);font-weight:600;margin:0 0 20px!important}
 
@@ -245,6 +270,7 @@ main > *{animation:arrive .35s ease-out both}
 @media (prefers-reduced-motion:reduce){
   .mark .r1,.mark .r2,.mark .r3{animation:none}
   main > *{animation:none}
+  .prose p:target,.prose blockquote:target{animation:none}
   .btn,.turn,.toc-card{transition:none}
   .btn:hover,.btn:active,.turn:hover,.toc-card:hover{transform:none}
 }
@@ -262,6 +288,7 @@ main > *{animation:arrive .35s ease-out both}
   .chapter-head{padding:0 20px;margin:28px auto 22px;gap:16px}
   .chapter-badge .pixel-num{min-width:60px;height:54px;font-size:26px}
   .prose{padding:0 20px}
+  .prose p:target{margin-left:-12px;margin-right:-12px;padding:8px 12px}
   .sheet{padding:24px 20px}
   .aside-panel{padding:22px 20px}
   .glossary{grid-template-columns:1fr}

@@ -53,6 +53,9 @@ class Block:
     text: str = ""
     level: int = 0
     items: list = field(default_factory=list)
+    # Glurp-isms said here: (anchor id, href of the entry on quotes.html).
+    # Set by link_isms(); rendered as ids on the paragraph or block quote.
+    isms: list = field(default_factory=list)
 
 
 # An image on a line of its own is a figure. Its placement is the image title,
@@ -242,7 +245,7 @@ def render(blocks: list[Block], first_para_class: str | None = None) -> str:
             if not lead_done:
                 cls = f' class="{first_para_class}"'
                 lead_done = True
-            out.append(f"<p{cls}>{inline(b.text)}</p>")
+            out.append(f"<p{ism_id(b)}{cls}>{ism_extra(b)}{inline(b.text)}{ism_back(b)}</p>")
         elif b.kind == "img":
             place = b.items[1] if len(b.items) > 1 else ""
             out.append(figure(b, f"fig fig-{place}") if place else figure(b))
@@ -251,7 +254,7 @@ def render(blocks: list[Block], first_para_class: str | None = None) -> str:
         elif b.kind == "hr":
             out.append('<hr class="ornament">')
         elif b.kind == "quote":
-            out.append(quote_html(b.items))
+            out.append(quote_html(b.items, b))
         elif b.kind in ("ul", "ol"):
             lis = "".join(f"<li>{inline(t)}</li>" for t in b.items)
             out.append(f"<{b.kind}>{lis}</{b.kind}>")
@@ -282,7 +285,26 @@ def render(blocks: list[Block], first_para_class: str | None = None) -> str:
     return "\n".join(out)
 
 
-def quote_html(lines: list[str]) -> str:
+def ism_id(b: Block) -> str:
+    return f' id="{b.isms[0][0]}"' if b.isms else ""
+
+
+def ism_extra(b: Block) -> str:
+    """A second Glurp-ism in the same block gets an empty anchor of its own."""
+    return "".join(f'<span class="ism-anchor" id="{i}"></span>' for i, _ in b.isms[1:])
+
+
+def ism_back(b: Block) -> str:
+    """Back to the index; shown only on the passage the reader arrived at."""
+    if not b.isms:
+        return ""
+    return (
+        f' <a class="ism-back" href="{attr(b.isms[0][1])}">'
+        f'<span aria-hidden="true">↩</span> Glurp-isms</a>'
+    )
+
+
+def quote_html(lines: list[str], b: Block | None = None) -> str:
     """Block quote; line breaks inside a quote are kept, as in verse."""
     paras, cur = [], []
     for ln in lines:
@@ -301,6 +323,9 @@ def quote_html(lines: list[str]) -> str:
         body += "<p>" + "<br>".join(inline(x) for x in p) + "</p>"
         if cite:
             body += f'<p class="attribution">{inline(cite)}</p>'
+    if b is not None and b.isms:
+        body = ism_extra(b) + body + f'<p class="ism-back-line">{ism_back(b).strip()}</p>'
+        return f"<blockquote{ism_id(b)}>{body}</blockquote>"
     return f"<blockquote>{body}</blockquote>"
 
 
@@ -536,22 +561,155 @@ def simple_page(src: str, out: str, kicker: str, body_class: str, prev, nxt, tra
     )
 
 
-def quotes_transform(blocks: list[Block]) -> str:
-    """Each quote becomes a speech card; a paragraph after it is its caption."""
-    cards = []
-    i = 0
-    while i < len(blocks):
-        b = blocks[i]
+# --------------------------------------------------------------------------
+# Glurp-isms: the linked index
+# --------------------------------------------------------------------------
+#
+# quotes.md is an index into the chapters. Each Glurp-ism is found in the
+# prose and linked to the paragraph (or verse) where it is said. The anchor
+# id comes from the words of the quote, so it survives prose edits around it.
+#
+# Finding a quote, in order of preference:
+#   1. said: the quote, ignoring case, punctuation and emphasis, is in the
+#      words a block puts in quotation marks, or in the block's plain text.
+#      The earliest chapter wins (where it was first said).
+#   2. near: the block sharing the longest run of words with the quote
+#      (at least NEAR_MIN_WORDS) - the passage the saying grew out of.
+#   3. unrecorded: no passage; listed unlinked at the end of the index.
+
+NEAR_MIN_WORDS = 4
+
+
+@dataclass
+class Ism:
+    quote: Block
+    caption: Block | None
+    anchor: str
+    chapter: "Chapter | None" = None
+    block: Block | None = None
+    how: str = ""  # "said", "near" or "" (unrecorded)
+    order: int = 0  # block position in the chapter
+
+
+def words(text: str) -> list[str]:
+    text = plain(text).lower().replace("\u2019", "'").replace("\u2018", "'")
+    return re.findall(r"[a-z0-9]+(?:'[a-z0-9]+)*", text)
+
+
+def spoken(text: str) -> str:
+    """The words inside quotation marks or italics, joined in order."""
+    parts = re.findall(r'"([^"]*)"|\u201c([^\u201d]*)\u201d|(?<![\w*])\*([^*]+)\*(?![\w*])', text)
+    return " ".join(next(g for g in m if g) for m in parts if any(m))
+
+
+def block_text(b: Block) -> str:
+    return b.text if b.kind == "p" else " ".join(b.items)
+
+
+def ism_anchor(text: str) -> str:
+    return "said-" + "-".join(words(text)[:8]).replace("'", "")
+
+
+def contains(hay: list[str], needle: list[str]) -> bool:
+    n = len(needle)
+    return any(hay[i : i + n] == needle for i in range(len(hay) - n + 1))
+
+
+def longest_run(a: list[str], b: list[str]) -> int:
+    best = 0
+    prev = [0] * (len(b) + 1)
+    for x in a:
+        cur = [0] * (len(b) + 1)
+        for j, y in enumerate(b):
+            if x == y:
+                cur[j + 1] = prev[j] + 1
+                best = max(best, cur[j + 1])
+        prev = cur
+    return best
+
+
+def load_isms(chapters: list[Chapter]) -> tuple[list[Block], list[Ism]]:
+    """Parse quotes.md and find where each Glurp-ism is said in the chapters."""
+    blocks = parse((ROOT / "quotes.md").read_text(encoding="utf-8"))
+    isms: list[Ism] = []
+    for i, b in enumerate(blocks):
         if b.kind == "quote":
-            cap = ""
-            if i + 1 < len(blocks) and blocks[i + 1].kind == "p":
-                cap = f"<figcaption>{inline(blocks[i + 1].text)}</figcaption>"
-                i += 1
-            cards.append(f'<figure class="speech">{quote_html(b.items)}{cap}</figure>')
+            cap = blocks[i + 1] if i + 1 < len(blocks) and blocks[i + 1].kind == "p" else None
+            isms.append(Ism(b, cap, ism_anchor(" ".join(b.items))))
+    seen = [x.anchor for x in isms]
+    dupes = {a for a in seen if seen.count(a) > 1}
+    if dupes:
+        sys.exit(f"two Glurp-isms share an anchor: {sorted(dupes)}")
+
+    passages = [
+        (ch, pos, b)
+        for ch in chapters
+        for pos, b in enumerate(ch.body)
+        if b.kind in ("p", "quote")
+    ]
+    for ism in isms:
+        q = words(" ".join(ism.quote.items))
+        for ch, pos, b in passages:
+            text = block_text(b)
+            if contains(words(spoken(text)), q) or contains(words(text), q):
+                ism.chapter, ism.block, ism.order, ism.how = ch, b, pos, "said"
+                break
         else:
-            cards.append(render([b]))
-        i += 1
-    return f'<div class="speech-grid">{"".join(cards)}</div>'
+            best, hit = 0, None
+            for ch, pos, b in passages:
+                run = longest_run(q, words(block_text(b)))
+                if run > best:
+                    best, hit = run, (ch, pos, b)
+            if hit and best >= min(NEAR_MIN_WORDS, len(q)):
+                ism.chapter, ism.order, ism.block = hit
+                ism.how = "near"
+        if ism.block is not None:
+            ism.block.isms.append((ism.anchor, f"quotes.html#{ism.anchor}"))
+    return blocks, isms
+
+
+def isms_transform(isms: list[Ism]):
+    """The Glurp-isms page: an index by chapter, each entry linked to its passage."""
+
+    def card(ism: Ism) -> str:
+        cap = f"<figcaption>{inline(ism.caption.text)}</figcaption>" if ism.caption else ""
+        where = ""
+        if ism.chapter:
+            ch = ism.chapter
+            near = ' <span class="ism-near">· near enough</span>' if ism.how == "near" else ""
+            where = (
+                f'<a class="ism-where" href="{ch.href}#{ism.anchor}">'
+                f"Ch. {ch.num} · {inline(ch.title)}{near}"
+                f' <span aria-hidden="true">→</span></a>'
+            )
+        return (
+            f'<figure class="speech" id="{ism.anchor}">{quote_html(ism.quote.items)}'
+            f"{cap}{where}</figure>"
+        )
+
+    def transform(_blocks: list[Block]) -> str:
+        groups = []
+        found = sorted((x for x in isms if x.chapter), key=lambda x: (x.chapter.num, x.order))
+        for ch in sorted({x.chapter.num: x.chapter for x in found}.values(), key=lambda c: c.num):
+            cards = "".join(card(x) for x in found if x.chapter is ch)
+            groups.append(
+                f'<section class="ism-group" aria-labelledby="isms-{ch.slug}">'
+                f'<h2 id="isms-{ch.slug}"><a href="{ch.href}">{pixel_num(ch.num)}'
+                f'<span><span class="visually-hidden">Chapter {ch.num}: </span>{inline(ch.title)}</span></a></h2>'
+                f'<div class="speech-grid">{cards}</div></section>'
+            )
+        lost = [x for x in isms if not x.chapter]
+        if lost:
+            groups.append(
+                '<section class="ism-group ism-unrecorded" aria-labelledby="isms-unrecorded">'
+                '<h2 id="isms-unrecorded"><span>Not yet in the book</span></h2>'
+                '<p class="ism-note">Said somewhere, by someone, probably Glurp. '
+                "The chapters have not caught up.</p>"
+                f'<div class="speech-grid">{"".join(card(x) for x in lost)}</div></section>'
+            )
+        return "\n".join(groups)
+
+    return transform
 
 
 def tooltip_transform(blocks: list[Block]) -> str:
@@ -743,6 +901,7 @@ def build(out: Path) -> None:
         }
     )
 
+    _, isms = load_isms(chapters)
     readme = readme_sections(parse((ROOT / "README.md").read_text(encoding="utf-8")))
     tooltip_blocks = parse((ROOT / "tooltip.md").read_text(encoding="utf-8"))
     canonical_tip = next(b.text for b in tooltip_blocks if b.kind == "pre")
@@ -774,7 +933,7 @@ def build(out: Path) -> None:
         simple_page(
             "quotes.md", "quotes.html", "Quotes", "page-quotes",
             ("glossary.html", "Glossary of Orkish Developer Terms"), ("tooltip.html", "Tooltip"),
-            transform=quotes_transform,
+            transform=isms_transform(isms),
         )
     )
     pages.append(
@@ -800,6 +959,14 @@ def build(out: Path) -> None:
     (out / "CNAME").write_text("lore.orkmeter.com\n", encoding="utf-8")
     (out / ".nojekyll").write_text("", encoding="utf-8")
     print(f"built {len(pages)} pages into {out}")
+    linked = [x for x in isms if x.chapter]
+    near = [x for x in linked if x.how == "near"]
+    print(f"glurp-isms: {len(linked)} of {len(isms)} linked ({len(near)} near enough)")
+    for x in near:
+        print(f"  near enough, ch. {x.chapter.num}: {plain(' '.join(x.quote.items))}")
+    for x in isms:
+        if not x.chapter:
+            print(f"  unrecorded: {plain(' '.join(x.quote.items))}")
 
 
 def main() -> None:

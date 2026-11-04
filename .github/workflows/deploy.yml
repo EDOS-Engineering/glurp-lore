@@ -1,0 +1,44 @@
+name: Deploy
+
+# Publishes the storybook to lore.orkmeter.com: S3 behind CloudFront in
+# EDOS-Labs (infra/lore-site.yaml, stack glurp-lore-site in us-east-1).
+# The role, bucket and distribution come from repository variables set
+# from that stack's outputs. No job environment: the role trusts the OIDC
+# subject repo:EDOS-Engineering/glurp-lore:ref:refs/heads/main.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build the storybook
+        run: python3 scripts/build_site.py --out _site && rm -f _site/CNAME
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.LORE_DEPLOY_ROLE_ARN }}
+          aws-region: us-east-1
+      - name: Upload
+        env:
+          BUCKET: ${{ vars.LORE_BUCKET }}
+        run: |
+          # Pages revalidate within five minutes; fonts, images and the rest a day.
+          aws s3 sync _site "s3://$BUCKET" --delete --exclude "*.html" --cache-control "public, max-age=86400"
+          aws s3 sync _site "s3://$BUCKET" --delete --exclude "*" --include "*.html" --cache-control "public, max-age=300" --content-type "text/html; charset=utf-8"
+      - name: Invalidate
+        run: aws cloudfront create-invalidation --distribution-id "${{ vars.LORE_DISTRIBUTION_ID }}" --paths "/*" --query Invalidation.Id --output text

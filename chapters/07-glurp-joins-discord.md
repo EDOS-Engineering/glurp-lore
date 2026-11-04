@@ -1,5 +1,7 @@
 # Chapter 7: Glurp Joins Discord
 
+![Glurp stands beside a chat window where their lime messages and Ork Bot's purple replies take turns.](../images/07-glurp-joins-discord.svg)
+
 For most of their life, Glurp had done their work alone in their tower, with only Sir Quackington and the crystal ball for company. They liked it that way. Or they thought they did.
 
 But the age of agents was a strange, fast, noisy age, and Glurp discovered something unexpected about it: everybody else was just as lost as they were.

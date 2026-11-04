@@ -1,5 +1,7 @@
 # Chapter 8: Epilogue — By the Light of the Ball
 
+![Late at night, Glurp stands between their glowing crystal ball and a terminal with a fresh prompt, ready to open a new session.](../images/08-epilogue.svg)
+
 It is late in the tower. It is always late in the tower.
 
 The rain has stopped. The kettle has boiled and been forgotten, as kettles are. Sir Quackington sits on the monitor, keeping an eye on things. The jar of **BUGS (FRIENDLY)** has one new resident, a harmless little rounding error that Glurp has decided is charming.

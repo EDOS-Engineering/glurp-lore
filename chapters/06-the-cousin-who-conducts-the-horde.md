@@ -1,5 +1,7 @@
 # Chapter 6: The Cousin Who Conducts the Horde
 
+![Glurp and their cousin Vindle, an indigo ork in teal with a baton and music notes, stand on either side of the crystal ball.](../images/06-cousin-conducts-the-horde.svg)
+
 Every ork has a cousin. Glurp's cousin was **Vindle**, and Vindle was, depending on who you asked and what time of day it was, either Glurp's dearest relation or their greatest rival.
 
 ## Indigo and teal

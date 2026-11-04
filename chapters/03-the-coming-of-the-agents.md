@@ -1,5 +1,7 @@
 # Chapter 3: The Coming of the Agents
 
+![Glurp watches agent output pour down their terminal while gold tokens drip from their hoodie pocket.](../images/03-coming-of-the-agents.svg)
+
 It began, as these things do, with a rumour at the tavern.
 
 "There's new magic," said a young ork named Pib, who had a laptop covered in stickers and a very confident haircut. "You just *tell* it what you want and it writes the code. And runs the tests. And fixes the tests. And writes more code."

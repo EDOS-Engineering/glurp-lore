@@ -1,5 +1,7 @@
 # Chapter 5: Finding the Meter
 
+![Glurp holds up a token gauge beside their glowing crystal ball, finally able to see where their tokens go.](../images/05-finding-the-meter.svg)
+
 Glurp picked up the crystal ball with both hands and held it to their face, nose to glass, single brow pressed flat against the curve.
 
 "All right," they said. "You've been tryin' to tell me somethin'. Out with it."

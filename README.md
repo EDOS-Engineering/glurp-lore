@@ -1,5 +1,7 @@
 # The Lore and History of Glurp
 
+![Glurp, a green pixel-art ork in a purple hoodie, stands beside their three-ringed crystal ball while gold tokens drip from their hoodie pocket.](images/glurp-header.svg)
+
 *The Orkish Software Developer (Wizard), lost in the age of agentic AI.*
 
 > "Oi, where'd all me tokens go?"

@@ -1,5 +1,7 @@
 # Chapter 4: The Five Wounds
 
+![Glurp stands beside the Book of Wounds, a scroll pinned to the wall with five entries, each marked in red.](../images/04-five-wounds.svg)
+
 Over the following weeks, Glurp kept losing tokens. Not all at once, and not in any single dramatic way. They leaked. They bled. Like a hoodie snagged on a nail, the loss came from a dozen small tears they could not see.
 
 Being a careful wizard, they started a notebook. They called it *The Book of Wounds*, which was a bit theatrical, but Glurp felt they had earned a bit of theatre. In it, they wrote down every way they caught their tokens slipping away. In the end there were five.

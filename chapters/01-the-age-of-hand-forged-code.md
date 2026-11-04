@@ -1,5 +1,7 @@
 # Chapter 1: The Age of Hand-Forged Code
 
+![Glurp stands beside their terminal, its screen full of hand-forged code, as they work late in the tower.](../images/01-hand-forged-code.svg)
+
 Long before the agents came, in a tower built mostly of old keyboards and a little bit of mortar, there lived an ork named Glurp.
 
 You would know them if you saw them. Green skin, the colour of a fresh terminal prompt. Two big lower tusks that clicked together when they were thinking hard, which was often. One heavy brow, single and magnificent, that rose and fell like a progress bar. Yellow eyes that glowed faintly in the dark, which was handy, because Glurp did their best work after midnight. They wore a purple hoodie with gold tips on the drawstrings (they chewed them when a build was slow) and a pair of brown boots that had walked a thousand miles, mostly between their desk and the kettle.

@@ -1,5 +1,7 @@
 # Chapter 2: The Crystal Ball
 
+![Glurp looks up at their crystal ball on its stand, its three rings glowing, and asks where it all goes.](../images/02-crystal-ball.svg)
+
 Every wizard has an instrument. Some have staffs. Some have wands. Some have very expensive mechanical keyboards that they talk about at parties. Glurp had a crystal ball.
 
 ## Where it came from

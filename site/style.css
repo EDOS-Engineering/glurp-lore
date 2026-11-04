@@ -1,7 +1,7 @@
 /* The Lore and History of Glurp: storybook styles. Ork Meter brand palette. */
 
-@font-face{font-family:"Pixelify Sans";font-style:normal;font-weight:500;font-display:swap;src:url(fonts/pixelify-sans-500.woff2) format("woff2")}
-@font-face{font-family:"Pixelify Sans";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/pixelify-sans-700.woff2) format("woff2")}
+/* Silkscreen ships one weight; every display rule asks for 400 so nothing is faux-bolded. */
+@font-face{font-family:Silkscreen;font-style:normal;font-weight:400;font-display:swap;src:url(fonts/silkscreen-400.woff2) format("woff2")}
 @font-face{font-family:Inter;font-style:normal;font-weight:400;font-display:swap;src:url(fonts/inter-400.woff2) format("woff2")}
 @font-face{font-family:Inter;font-style:normal;font-weight:500;font-display:swap;src:url(fonts/inter-500.woff2) format("woff2")}
 @font-face{font-family:Inter;font-style:normal;font-weight:600;font-display:swap;src:url(fonts/inter-600.woff2) format("woff2")}
@@ -13,7 +13,7 @@
   --bg:#101412;--panel:#171d19;--panel-2:#1c241f;--line:#303a32;
   --text:#edf3e9;--soft:#c9d4c6;--muted:#a2afa4;
   --lime:#c4f58a;--purple:#c7b9ff;--gold:#f2c14e;--outline:#0d120e;
-  --display:"Pixelify Sans",ui-monospace,monospace;
+  --display:Silkscreen,ui-monospace,monospace;
   --body:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
   --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
   --border:4px solid var(--outline);
@@ -74,7 +74,7 @@ main.wrap{flex:1;padding-top:36px;padding-bottom:56px}
 .brand{display:flex;align-items:center;gap:10px;color:var(--text)}
 .brand:hover{color:var(--text)}
 .brand-text{display:flex;flex-direction:column;line-height:1.1}
-.brand-name{font:700 22px/1.1 var(--display);letter-spacing:.02em}
+.brand-name{font:400 19px/1.1 var(--display);letter-spacing:-.03em}
 .brand-sub{font-size:11px;color:var(--muted);margin-top:3px}
 .site-nav{display:flex;gap:4px;margin-right:auto}
 .site-nav a{color:var(--soft);font-weight:600;font-size:15px;padding:8px 10px}
@@ -93,7 +93,7 @@ main.wrap{flex:1;padding-top:36px;padding-bottom:56px}
 .cover-art{margin:0;border-bottom:var(--border);background:#0f1511}
 .cover-art img{width:100%;image-rendering:pixelated}
 .cover-text{position:relative;padding:36px 48px 44px;text-align:center}
-.cover h1{font:700 clamp(34px,6vw,60px)/1.08 var(--display);letter-spacing:.01em;margin:4px 0 14px;text-wrap:balance}
+.cover h1{font:400 clamp(30px,5.2vw,52px)/1.1 var(--display);letter-spacing:-.04em;margin:4px 0 14px;text-wrap:balance}
 .cover h1 .glurp{color:var(--lime);text-shadow:4px 4px 0 var(--outline)}
 .subtitle{font-style:italic;color:var(--soft);font-size:19px;margin:0 auto 22px;max-width:36em}
 .cover blockquote{margin:0 auto 28px;max-width:30em;border:0;padding:0;background:none;font-size:20px}
@@ -105,7 +105,7 @@ main.wrap{flex:1;padding-top:36px;padding-bottom:56px}
 
 /* Page heads (contents, glossary, quotes) */
 .page-head{margin:0 0 28px}
-.page-head h1{font:700 clamp(32px,5vw,48px)/1.1 var(--display)}
+.page-head h1{font:400 clamp(28px,4.4vw,42px)/1.12 var(--display);letter-spacing:-.04em}
 .page-head .intro{color:var(--soft);font-size:18px;max-width:40em;margin:12px 0 0}
 .sheet{padding:32px 40px}
 
@@ -119,7 +119,7 @@ main.wrap{flex:1;padding-top:36px;padding-bottom:56px}
 .toc-title{font-weight:600;font-size:17px;line-height:1.35;padding-top:2px}
 
 /* Pixel chapter numbers */
-.pixel-num{flex:none;display:inline-grid;place-items:center;min-width:44px;height:40px;padding:0 6px;background:var(--gold);color:var(--outline);border:3px solid var(--outline);box-shadow:3px 3px 0 var(--outline);font:700 22px/1 var(--display);letter-spacing:.04em}
+.pixel-num{flex:none;display:inline-grid;place-items:center;min-width:44px;height:40px;padding:0 6px;background:var(--gold);color:var(--outline);border:3px solid var(--outline);box-shadow:3px 3px 0 var(--outline);font:400 19px/1 var(--display);letter-spacing:0}
 
 /* Chapter page */
 .book-page{padding:0 0 32px}
@@ -130,13 +130,13 @@ main.wrap{flex:1;padding-top:36px;padding-bottom:56px}
 .chapter-badge{flex:none;display:flex;flex-direction:column;align-items:center;gap:8px}
 .chapter-badge .pixel-num{min-width:76px;height:68px;font-size:40px;border-width:4px;box-shadow:5px 5px 0 var(--outline)}
 .badge-label{font-size:11px;color:var(--muted)}
-.chapter-head h1{font:700 clamp(28px,4.4vw,42px)/1.12 var(--display);text-wrap:balance}
+.chapter-head h1{font:400 clamp(25px,3.8vw,36px)/1.15 var(--display);letter-spacing:-.04em;text-wrap:balance}
 .chapter-head .kicker{margin-bottom:6px}
 
 .prose{max-width:720px;margin:0 auto;padding:0 40px;color:var(--text)}
 .sheet .prose,.aside-panel .prose{padding:0;max-width:none}
 .prose p{margin:0 0 1.1em}
-.prose h2{font:700 26px/1.2 var(--display);color:var(--lime);margin:1.8em 0 .7em;display:flex;align-items:center;gap:12px}
+.prose h2{font:400 22px/1.25 var(--display);letter-spacing:-.03em;color:var(--lime);margin:1.8em 0 .7em;display:flex;align-items:center;gap:12px}
 .prose h2::before{content:"";flex:none;width:10px;height:10px;background:var(--gold);box-shadow:3px 3px 0 var(--outline)}
 .prose strong{color:#fff;font-weight:700}
 .prose em{color:var(--soft)}
@@ -170,7 +170,7 @@ main.wrap{flex:1;padding-top:36px;padding-bottom:56px}
 .prose:has(> .fig-vignette:last-child) + .fin{margin-top:1.2em}
 
 /* Drop cap */
-.prose p.lead::first-letter{float:left;font:700 64px/1 var(--display);color:var(--outline);background:var(--lime);border:4px solid var(--outline);box-shadow:4px 4px 0 var(--outline);padding:4px 10px 6px;margin:6px 14px 0 0}
+.prose p.lead::first-letter{float:left;font:400 56px/1 var(--display);color:var(--outline);background:var(--lime);border:4px solid var(--outline);box-shadow:4px 4px 0 var(--outline);padding:4px 10px 6px;margin:6px 14px 0 0}
 .prose p.lead{font-size:1.06em}
 
 /* Ornamental rules and the end mark */
@@ -198,7 +198,7 @@ hr.ornament{width:58px;background:
 
 /* Contents asides */
 .aside-panel{padding:28px 32px;margin:0 0 28px}
-.aside-panel h2{font:700 26px/1.2 var(--display);color:var(--lime);margin-bottom:14px}
+.aside-panel h2{font:400 22px/1.25 var(--display);letter-spacing:-.03em;color:var(--lime);margin-bottom:14px}
 .table-wrap{overflow-x:auto;margin:0 0 1.2em}
 table{border-collapse:collapse;width:100%;font-size:16px}
 th,td{text-align:left;vertical-align:top;padding:12px 14px;border-bottom:2px solid var(--line)}
@@ -230,7 +230,7 @@ tbody th{white-space:nowrap}
 .site-footer{border-top:4px solid var(--outline);background:#121813;padding:36px 0 32px}
 .footer-grid{display:grid;grid-template-columns:auto 1fr;gap:20px 32px;align-items:center}
 .footer-brand{display:flex;align-items:center;gap:14px}
-.footer-pitch{margin:0;font:700 20px/1.2 var(--display);color:var(--text);max-width:14em}
+.footer-pitch{margin:0;font:400 17px/1.3 var(--display);letter-spacing:-.03em;color:var(--text);max-width:16em}
 .footer-cta{display:flex;flex-wrap:wrap;gap:14px;justify-content:flex-end}
 .footer-links{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px 20px;padding-top:20px;border-top:2px solid var(--line)}
 .footer-links a{color:var(--soft);font-weight:500;padding:6px 0}
@@ -260,7 +260,7 @@ main > *{animation:arrive .35s ease-out both}
   .subtitle{font-size:17px}
   .cover blockquote{font-size:18px}
   .chapter-head{padding:0 20px;margin:28px auto 22px;gap:16px}
-  .chapter-badge .pixel-num{min-width:60px;height:54px;font-size:30px}
+  .chapter-badge .pixel-num{min-width:60px;height:54px;font-size:26px}
   .prose{padding:0 20px}
   .sheet{padding:24px 20px}
   .aside-panel{padding:22px 20px}
@@ -269,7 +269,7 @@ main > *{animation:arrive .35s ease-out both}
   .turn-next{order:-1}
   .footer-grid{grid-template-columns:1fr}
   .footer-cta{justify-content:flex-start}
-  .prose p.lead::first-letter{font-size:52px;padding:2px 8px 4px;margin:6px 12px 0 0}
+  .prose p.lead::first-letter{font-size:46px;padding:2px 8px 4px;margin:6px 12px 0 0}
   .fig-wide{--fig-w:calc(100cqi - 24px);margin-top:1.8em;margin-bottom:1.8em}
 }
 /* Phones: spot art stops floating and sits centred between paragraphs. */
@@ -279,7 +279,7 @@ main > *{animation:arrive .35s ease-out both}
 }
 @media (max-width:420px){
   .bar{gap:10px 12px}
-  .brand-name{font-size:20px}
+  .brand-name{font-size:17px}
   .site-nav{margin-left:0;width:100%;justify-content:space-between}
   .site-nav a{padding:8px 6px}
   .chapter-head{flex-direction:column;align-items:flex-start}

@@ -622,7 +622,7 @@ def layout(page: Page) -> str:
 <meta property="og:image:alt" content="Glurp, a green pixel-art ork in a purple hoodie, beside a three-ringed crystal ball, under the title The Lore and History of Glurp.">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="preload" href="fonts/pixelify-sans-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/silkscreen-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="style.css">
 {head_links}<script src="site.js" defer></script>
@@ -677,12 +677,12 @@ def layout(page: Page) -> str:
 # --------------------------------------------------------------------------
 
 OG_HTML = """<!doctype html><html><head><meta charset="utf-8"><style>
-@font-face{{font-family:Pixelify;font-weight:700;src:url({fonts}/pixelify-sans-700.woff2) format("woff2")}}
+@font-face{{font-family:Silkscreen;font-weight:400;src:url({fonts}/silkscreen-400.woff2) format("woff2")}}
 @font-face{{font-family:JBM;font-weight:500;src:url({fonts}/jetbrains-mono-500.woff2) format("woff2")}}
 html,body{{margin:0;width:1200px;height:630px;overflow:hidden;background:#101412}}
 .card{{position:absolute;inset:28px;background:#171d19;border:6px solid #0d120e;box-shadow:10px 10px 0 #0d120e;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px}}
 img{{width:896px;height:384px;image-rendering:pixelated;border:6px solid #0d120e}}
-h1{{margin:0;font:700 52px Pixelify,monospace;color:#edf3e9;letter-spacing:1px}} h1 span{{color:#c4f58a}}
+h1{{margin:0;font:400 44px Silkscreen,monospace;color:#edf3e9;letter-spacing:-.04em}} h1 span{{color:#c4f58a}}
 p{{position:absolute;right:30px;bottom:18px;margin:0;font:500 18px JBM,monospace;color:#a2afa4}}
 </style></head><body><div class="card"><img src="{art}" alt=""><h1>The Lore and History of <span>Glurp</span></h1><p>lore.orkmeter.com</p></div></body></html>"""
 

@@ -17,7 +17,7 @@ Glurp uses they/them pronouns.
 
 ## The canonical summary
 
-Glurp is an Orkish software developer and wizard who spent ages hand-crafting code by the light of their crystal ball, a three-ringed seeing stone that shows where everything goes. When the age of agentic AI arrived, Glurp dove in with tools like Claude Code and Codex, and promptly started bleeding tokens: test logs flooding the context, agents reading the same file five times, loops repeating the same failing step, giant output burying everything, and cache going cold right before an expensive resume. Asking "Oi, where'd all me tokens go?" one too many times, Glurp found Ork Meter, which counts every token so every token counts, and Ork Meter Plus, which heals thy wounds. These days Glurp counts while their indigo cousin Vindle conducts a whole horde of agents with Orkestera, and the two of them argue about it at every family dinner.
+Glurp is an Orkish software developer and wizard who spent ages hand-crafting code by the light of their crystal ball, a three-ringed seeing stone that shows where everything goes. When the age of agentic AI arrived, Glurp dove in with tools like Claude Code and Codex, and promptly started bleeding tokens: test logs flooding the context, agents reading the same file five times, loops repeating the same failing step, giant output burying everything, and cache going cold right before an expensive resume. Asking "Oi, where'd all me tokens go?" one too many times, Glurp found Ork Meter, which counts every token so every token counts, and Ork Meter Plus, which heals thy wounds. These days Glurp counts while their indigo cousin Glorp conducts a whole horde of agents with Orkestera, and the two of them argue about it at every family dinner.
 
 ## Contents
 

@@ -4,7 +4,7 @@ Fan lore is welcome. Pull up a stool.
 
 ## What we would love
 
-- New short stories about Glurp, cousin Vindle, the valley, the tower, or the Discord regulars.
+- New short stories about Glurp, cousin Glorp, the valley, the tower, or the Discord regulars.
 - New Glurp-isms for [quotes.md](quotes.md) and new terms for [glossary.md](glossary.md).
 - Fixes for typos, broken links, or lines that do not scan (except the last line of the epilogue, which does not scan on purpose).
 

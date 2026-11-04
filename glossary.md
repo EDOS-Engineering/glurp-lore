@@ -18,7 +18,7 @@ Words heard in Glurp's tower, the valley tavern, and the Ork Meter Discord. Spel
 : The Fifth Wound. When the cache cools while you are away and an expensive resume must be warmed up again at full price.
 
 **Conductin'**
-: Running many agents at once, in time, with Orkestera. What cousin Vindle does. See also *horde*.
+: Running many agents at once, in time, with Orkestera. What cousin Glorp does. See also *horde*.
 
 **Doorframe notch**
 : A mark carved for each green test or finished feature. A tall developer's doorframe tells their whole history.

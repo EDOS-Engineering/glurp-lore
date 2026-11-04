@@ -26,7 +26,7 @@ Never followed by bed.
 
 > "A horde, improperly conducted, is a very expensive racket."
 
-To cousin Vindle, at dinner, again.
+To cousin Glorp, at dinner, again.
 
 > "Have you *counted*?"
 

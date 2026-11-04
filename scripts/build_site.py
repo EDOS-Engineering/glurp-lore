@@ -55,7 +55,15 @@ class Block:
     items: list = field(default_factory=list)
 
 
-IMAGE_LINE = re.compile(r"^!\[([^\]]*)\]\(([^)]+)\)$")
+# An image on a line of its own is a figure. Its placement is the image title,
+#   ![alt](../images/x.svg "spot-right")      (invisible on GitHub)
+# or a pandoc-style class after it,
+#   ![alt](../images/x.svg){.spot-right}
+# One of PLACEMENTS; no placement means a full-width plate.
+IMAGE_LINE = re.compile(
+    r'^!\[([^\]]*)\]\(([^)\s]+)(?:\s+"([^"]*)")?\)(?:\{\.([\w-]+)\})?$'
+)
+PLACEMENTS = ("spot-right", "spot-left", "wide", "vignette")
 
 
 def _starts_block(line: str) -> bool:
@@ -137,7 +145,10 @@ def parse(md: str) -> list[Block]:
             continue
         img = IMAGE_LINE.match(line.strip())
         if img:
-            out.append(Block("img", img.group(1), items=[img.group(2)]))
+            place = img.group(4) or (img.group(3) or "").strip()
+            if place and place not in PLACEMENTS:
+                sys.exit(f"unknown image placement {place!r} in: {line.strip()}")
+            out.append(Block("img", img.group(1), items=[img.group(2), place]))
             i += 1
             continue
         buf = [line]
@@ -233,7 +244,8 @@ def render(blocks: list[Block], first_para_class: str | None = None) -> str:
                 lead_done = True
             out.append(f"<p{cls}>{inline(b.text)}</p>")
         elif b.kind == "img":
-            out.append(figure(b))
+            place = b.items[1] if len(b.items) > 1 else ""
+            out.append(figure(b, f"fig fig-{place}") if place else figure(b))
         elif b.kind == "pre":
             out.append(f"<pre><code>{html.escape(b.text)}</code></pre>")
         elif b.kind == "hr":

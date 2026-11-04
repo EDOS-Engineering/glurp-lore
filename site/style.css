@@ -151,6 +151,24 @@ main.wrap{flex:1;padding-top:36px;padding-bottom:56px}
 .prose blockquote p{margin:0;color:var(--purple);font-style:italic}
 .prose blockquote p+p{margin-top:.6em}
 
+/* Illustrations inside the story. Placement comes from the image title in
+   the Markdown (see scripts/build_site.py): spot-right / spot-left float
+   beside the paragraphs that follow, wide breaks out of the text column,
+   vignette closes a scene. All of it is pixel art: never smoothed. */
+.book-page{container-type:inline-size}
+.fig{margin:0}
+.fig img{image-rendering:pixelated}
+.prose h2,.prose hr{clear:both}
+.prose ul,.prose ol{display:flow-root}
+.fig-spot-right,.fig-spot-left{max-width:42%;margin-top:.35em;margin-bottom:1em}
+.fig-spot-right{float:right;margin-left:24px;margin-right:-24px}
+.fig-spot-left{float:left;margin-right:24px;margin-left:-24px}
+.fig-wide{--fig-w:min(880px,100cqi - 32px);clear:both;width:var(--fig-w);margin:2.2em calc((100% - var(--fig-w)) / 2)}
+.fig-wide img{width:100%;box-shadow:var(--shadow)}
+.fig-vignette{clear:both;display:flex;justify-content:center;margin:2.4em auto .4em}
+.fig-vignette img{max-width:min(100%,300px)}
+.prose:has(> .fig-vignette:last-child) + .fin{margin-top:1.2em}
+
 /* Drop cap */
 .prose p.lead::first-letter{float:left;font:700 64px/1 var(--display);color:var(--outline);background:var(--lime);border:4px solid var(--outline);box-shadow:4px 4px 0 var(--outline);padding:4px 10px 6px;margin:6px 14px 0 0}
 .prose p.lead{font-size:1.06em}
@@ -252,6 +270,12 @@ main > *{animation:arrive .35s ease-out both}
   .footer-grid{grid-template-columns:1fr}
   .footer-cta{justify-content:flex-start}
   .prose p.lead::first-letter{font-size:52px;padding:2px 8px 4px;margin:6px 12px 0 0}
+  .fig-wide{--fig-w:calc(100cqi - 24px);margin-top:1.8em;margin-bottom:1.8em}
+}
+/* Phones: spot art stops floating and sits centred between paragraphs. */
+@media (max-width:600px){
+  .fig-spot-right,.fig-spot-left{float:none;max-width:none;display:flex;justify-content:center;margin:1.6em auto}
+  .fig-spot-right img,.fig-spot-left img{max-width:min(100%,264px)}
 }
 @media (max-width:420px){
   .bar{gap:10px 12px}

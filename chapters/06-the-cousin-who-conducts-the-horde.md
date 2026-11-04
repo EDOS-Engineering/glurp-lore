@@ -8,9 +8,9 @@ Every ork has a cousin. Glurp's cousin was **Glorp**, and Glorp was, depending o
 
 Glorp did not look like Glurp. Where Glurp was green as a fresh prompt, Glorp had deep **indigo** skin, like the sky an hour after sunset. Where Glurp wore a purple hoodie and brown boots, Glorp wore a long coat of **teal**, with a high collar and far too many pockets, each one holding a tiny baton.
 
-"Batons?" asked Glurp, the first time they saw the coat.
+"Wand?" asked Glurp, the first time they saw the coat.
 
-"I conduct," said Glorp grandly.
+"I conduct, this is a baton!" said Glorp grandly.
 
 ## The horde
 

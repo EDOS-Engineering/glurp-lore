@@ -1349,6 +1349,332 @@ def code_like():
 
 
 # --------------------------------------------------------------------------
+# Contents cards: one tableau per chapter (80 x 48 cells at 8 px = 640 x 384),
+# each with its own pose, facing and framing so no two cards look alike
+# --------------------------------------------------------------------------
+
+def mirror(rows):
+    """Flip a sprite left to right (ASK faces left; mirrored, it faces right)."""
+    return [list(reversed(list(r))) for r in rows]
+
+
+def scale2(rows):
+    """Double every cell, for close-ups."""
+    out = []
+    for r in rows:
+        wide = [c for c in r for _ in (0, 1)]
+        out += [wide, list(wide)]
+    return out
+
+
+def lean(rows, shifts):
+    """Shift row bands sideways ((first, last, dx) each) so the figure leans."""
+    pad = max(dx for _, _, dx in shifts)
+    out = []
+    for y, r in enumerate(rows):
+        dx = next((d for a, b, d in shifts if a <= y <= b), 0)
+        out.append(["."] * dx + list(r) + ["."] * (pad - dx))
+    return out
+
+
+def ask_no_hands(rows=ASK):
+    """ASK (three-quarter, facing left) with both hands removed, for posed arms."""
+    g = [list(r) for r in rows]
+    for y in (18, 19):
+        g[y][1], g[y][2], g[y][3] = ".", "K", "H"
+        g[y][18], g[y][19], g[y][20] = "Q", "K", "."
+    return g
+
+
+def ask_brow_up(rows):
+    """ASK with the brow lifted a row: surprise."""
+    g = [list(r) for r in rows]
+    for x in range(3, 14):
+        if g[4][x] == "K":
+            g[4][x] = "G"
+        if g[3][x] in ("G", "L", "D"):
+            g[3][x] = "K"
+    return g
+
+
+def ask_grin(rows):
+    """ASK with an open grin under the tusks."""
+    g = [list(r) for r in rows]
+    g[12][4:9] = list("XXXXK")
+    g[13][4:9] = list("KKKKK")
+    return g
+
+
+def glurp_back(seated=False):
+    """Glurp seen from behind: bald green head, ears out, hood lying on the back."""
+    g = [list(r) for r in BASE]
+    for y in range(3, 13):
+        row = g[y]
+        ks = [x for x in range(4, 20) if row[x] == "K"]
+        lo, hi = ks[0], ks[-1]
+        for x in range(lo + 1, hi):
+            if row[x] in "KWEPXV":
+                row[x] = "G"
+            if y >= 10 and row[x] == "G":
+                row[x] = "D"
+    for y in range(14, 22):
+        for x in range(4, 20):
+            if g[y][x] in "WTJ":
+                g[y][x] = "H"
+            if y in (18, 19) and g[y][x] == "Q" and 8 <= x <= 15:
+                g[y][x] = "H"
+    hood = ["JJJJJJJJ", "KQQQQQQK", "KJQQQQJK", ".KJJJJK."]
+    for j, row in enumerate(hood):
+        for i, ch in enumerate(row):
+            if ch != ".":
+                g[14 + j][8 + i] = ch
+    if seated:
+        g = g[:22]
+    return g
+
+
+def build_toc():
+    out = {}
+
+    # ---- 01: forging code at the anvil-keyboard, hammer raised (three-quarter right)
+    s = Scene()
+    tower_wall(s)
+    s.window(60, 4, 12, 14, stars=[(2, 2), (8, 3), (3, 9), (9, 11)])
+    s.moon(62, 6)
+    body = mirror(ask_no_hands())
+    smith = pose(30, 34, 3, 9, body, [[(19, 16), (22, 9), (23, 3)], [(4, 16), (2, 20), (3, 22)]])
+    # the hammer, raised over the head: handle back over the shoulder, head up top
+    hx, hy = 23 + 3, 3 + 9
+    for k in range(1, 7):
+        smith.put(hx - k + 1, hy - k + 1 - 1, "wood")
+    smith.frame(hx - 10, hy - 10, 8, 5, "U")
+    smith.box(hx - 9, hy - 9, 6, 1, "M")
+    smith.box(hx - 9, hy - 7, 6, 1, "N")
+    s.stand(smith.cells(), 14)
+    # the anvil, its face set with keycaps
+    ax, ay = 38, s.floor - 15
+    s.frame(ax, ay, 26, 5, "U")
+    s.frame(ax + 25, ay + 1, 6, 3, "U")
+    s.put(ax + 30, ay + 2, "K")
+    for i in range(ax + 2, ax + 24, 3):
+        s.frame(i, ay - 2, 3, 3, "M")
+        s.put(i + 1, ay - 1, "W")
+    s.frame(ax + 6, ay + 4, 14, 6, "N")
+    s.frame(ax + 3, ay + 9, 20, 6, "N")
+    s.box(ax + 4, ay + 10, 18, 1, "U")
+    # a glowing bar of fresh code on the anvil, and the sparks it throws
+    s.frame(ax + 4, ay - 5, 15, 4, "S")
+    s.box(ax + 5, ay - 4, 13, 1, "F")
+    for x, y, ch in [(42, 18, "T"), (46, 15, "F"), (51, 17, "S"), (55, 13, "T"), (40, 14, "F"), (49, 11, "T"),
+                     (58, 19, "S"), (36, 20, "T"), (54, 21, "F"), (60, 15, "T"), (63, 18, "F")]:
+        s.put(x, y, ch)
+    out["toc/01-the-age-of-hand-forged-code"] = (s, (
+        "Glurp, turned three-quarters, raises a hammer over their head to strike a glowing bar of code on an anvil "
+        "set with keycaps, sparks flying."))
+
+    # ---- 02: close-up, peering into the ball held in both hands (scaled up, from behind the glass)
+    s = Scene()
+    s.window(4, 3, 14, 16, stars=[(2, 2), (10, 4), (4, 11), (11, 12)])
+    s.moon(11, 6)
+    tower_wall(s, x0=20)
+    face = ask_brow_up(ASK[:22])
+    face = [[("S" if c == "E" else c) for c in r] for r in face]
+    big = scale2(face)
+    s.stamp(30, 4, big)
+    s.orb(30, 37, 12)
+    # hands cupping the ball, both sides
+    for hx, hy in ((15, 33), (41, 33)):
+        s.frame(hx, hy, 6, 6, "G")
+        s.box(hx + 1, hy + 1, 2, 2, "L")
+    for x, y, ch in [(46, 22, "S"), (49, 19, "ring2"), (52, 23, "S")]:
+        s.put(x, y, ch)
+    out["toc/02-the-crystal-ball"] = (s, (
+        "A close-up of Glurp leaning over the crystal ball cupped in both hands, brow raised, its three rings "
+        "glowing lime in their eyes."))
+
+    # ---- 03: startled, leaning back, as the agents swarm in (three-quarter left)
+    s = Scene()
+    tower_wall(s)
+    jumpy = ask_brow_up(ask_no_hands())
+    jumpy = lean(jumpy, [(0, 13, 2), (14, 17, 1)])
+    fright = pose(34, 34, 6, 7, jumpy, [[(3, 16), (-2, 10), (-4, 5)], [(21, 15), (26, 10), (28, 4)]])
+    s.stand(fright.cells(), 44)
+    for x, y in ((50, 1), (56, 0), (62, 2)):
+        s.box(x + 1, y, 1, 3, "T")
+        s.put(x + 1, y + 4, "T")
+    swarm = [(2, 30), (13, 22), (5, 13), (19, 32), (26, 16), (17, 6), (31, 27), (36, 9)]
+    for k, (x, y) in enumerate(swarm):
+        s.stamp(x, y, AGENT)
+        s.box(x - 3 - (k % 2), y + 5, 2, 1, "c")
+        s.box(x - 6, y + 7, 3, 1, "c")
+    for x, y in ((74, 28), (76, 35), (70, 36)):
+        s.stamp(x, y, COIN)
+    out["toc/03-the-coming-of-the-agents"] = (s, (
+        "Glurp leans back, startled, arms flung up and brow high, as a swarm of small agents rushes in from the left "
+        "and gold tokens fly from their pocket."))
+
+    # ---- 04: bandaged, sitting on a crate, clutching a leaking token pouch (front, seated)
+    s = Scene()
+    s.window(6, 6, 14, 16)
+    for x, y in ((8, 8), (12, 11), (16, 9), (9, 15), (14, 18), (17, 14)):
+        s.box(x, y, 1, 2, "U")  # rain
+    tower_wall(s, x0=22)
+    hurt = [list(r) for r in no_hands()]
+    # sad brow: the outer ends drop
+    hurt[4][5], hurt[4][18] = "G", "G"
+    hurt[5][6] = hurt[5][17] = "K"
+    # a bandage round the head, with a red spot, and a plaster on the cheek
+    for x in range(5, 19):
+        hurt[2][x] = "W"
+    hurt[2][14], hurt[2][15] = "R", "R"
+    hurt[3][5], hurt[3][18] = "V", "V"
+    hurt[8][15], hurt[8][17] = "W", "W"
+    hurt[9][16] = "W"
+    for x in range(8, 16):  # a wobbly frown instead of the open mouth
+        hurt[10][x] = "G"
+        hurt[11][x] = "K" if 10 <= x <= 13 else "G"
+        hurt[12][x] = "K" if x in (9, 14) else "G"
+    hurt[12][8] = hurt[12][15] = "G"
+    cx = 28
+    crate_y = s.floor - 9
+    s.stamp(cx, crate_y - 21, hurt[:22])
+    s.frame(cx - 1, crate_y, 26, 9, "wood")
+    s.box(cx, crate_y + 4, 24, 1, "wood_dk")
+    s.box(cx + 4, crate_y + 1, 1, 7, "wood_dk")
+    s.box(cx + 19, crate_y + 1, 1, 7, "wood_dk")
+    for bx in (cx + 4, cx + 14):  # boots dangling over the front
+        s.frame(bx, crate_y, 6, 3, "N")
+        s.frame(bx, crate_y + 2, 6, 3, "B")
+    # the pouch, held in both hands at the belly, coins slipping from a tear
+    px, py = cx + 7, crate_y - 8
+    s.stamp(px, py, ["...KKKK...", "..KTOOTK..", ".KBBBBBBK.", "KBBBOBBBBK", "KBBBBBBOBK", ".KBBBBBBK.", "..KKKRKK.."])
+    for hx in (px - 2, px + 9):
+        s.frame(hx, py + 2, 3, 3, "G")
+    s.put(px + 5, crate_y + 1, "T")
+    s.put(px + 5, crate_y + 3, "T")
+    s.put(px + 5, crate_y + 6, "T")
+    for x, y in ((px + 1, s.floor - 2), (px + 4, s.floor - 2), (px + 7, s.floor - 3)):
+        s.stamp(x, y - 2, COIN)
+    bx, by = 60, 8
+    s.frame(bx - 1, by, 15, 3, "V")
+    s.frame(bx, by + 2, 13, 17, "W")
+    s.frame(bx - 1, by + 18, 15, 3, "V")
+    for k in range(5):
+        s.box(bx + 2, by + 4 + 3 * k, 2, 2, "R")
+        s.box(bx + 5, by + 4 + 3 * k, 6 - (k % 2) * 2, 1, "V")
+    out["toc/04-the-five-wounds"] = (s, (
+        "Glurp sits on a crate with a bandage round their head and a plaster on their cheek, clutching a torn token "
+        "pouch while gold tokens leak from it onto the floor."))
+
+    # ---- 05: triumphant, the meter held aloft in both hands (front, low and centred)
+    s = Scene(floor=45)
+    gx, gy = 40, 9  # gauge centre
+    for dx, dy in ((-1, 0), (1, 0), (-1, 1), (1, 1)):  # rays from the gauge
+        for d in range(12, 22, 3):
+            x, y = gx + dx * d, gy + dy * (d * 2 // 3)
+            s.put(x, y, "T" if d % 2 else "S")
+            s.put(x + dx, y + dy, "F" if d % 2 else "S")
+    win = sprite(28, 44)
+    win.stamp(5, 0, scale2(GAUGE))
+    win.stamp(2, 19, grin(no_hands()))
+    win.limb([(4, 35), (1, 26), (5, 15)])
+    win.limb([(21, 35), (24, 26), (20, 15)])
+    s.stand(win.cells(), gx - 14)
+    s.ball(66, 6)
+    s.ball(14, 6)
+    out["toc/05-finding-the-meter"] = (s, (
+        "Glurp stands grinning with both arms high, holding the token gauge aloft as rays of light burst from it."))
+
+    # ---- 06: Glurp asks "Wand?", Glorp answers "Baton!" (three-quarter, face to face)
+    s = Scene()
+    for x in (2, 74):
+        s.frame(x, 1, 4, s.floor - 1, "stone")
+    s.frame(24, 2, 32, 6, "6")
+    for k, nx in enumerate(range(27, 52, 6)):
+        s.stamp(nx, 2 + (k % 2), ["..99", "..9.", "999.", "99.."])
+    asker = pose(36, 25, 0, 0, mirror(ask_no_hands()), [[(19, 16), (24, 12), (29, 8)], [(4, 16), (3, 20), (4, 22)]])
+    s.stand(asker.cells(), 8)
+    s.frame(14, 10, 9, 9, "W")  # bubble with a question mark
+    s.stamp(16, 11, [".JJJ.", "J...J", "...J.", "..J..", ".....", "..J.."])
+    s.put(16, 19, "W")
+    s.put(15, 20, "K")
+    con = pose(36, 25, 10, 0, ask_brow_up(ask_no_hands()), [[(18, 16), (22, 10), (24, 5)], [(3, 16), (0, 19), (3, 21)]])
+    for i in range(1, 6):
+        con.put(24 + 10 + 1 + i // 2, 5 - i, "W")
+    s.stand(con.cells(), 40, CONDUCT)
+    s.stamp(52, 10, NOTE, CONDUCT)
+    s.stamp(60, 9, ["..YY", "..Y.", "YYY.", "YYY."], CONDUCT)
+    s.frame(66, 9, 7, 9, "W")  # bubble with an exclamation mark
+    s.box(69, 11, 1, 3, "9")
+    s.put(69, 15, "9")
+    s.put(68, 18, "W")
+    s.put(67, 19, "K")
+    out["toc/06-the-cousin-who-conducts-the-horde"] = (s, (
+        "Glurp points at cousin Glorp's raised baton with a question mark overhead; Glorp, indigo in a teal coat, "
+        "holds it high and answers with an exclamation mark, music notes above the head."))
+
+    # ---- 07: typing excitedly at a laptop, chat bubbles rising (three-quarter right, seated)
+    s = Scene()
+    s.box(0, 1, 80, 2, "wood")
+    s.box(0, 3, 80, 1, "K")
+    s.stamp(66, 4, ORK_BOT)
+    typist = mirror(ask_grin(ask_no_hands())[:21])
+    table_y = s.floor - 12
+    tx = 18
+    s.limb([(tx + 6, table_y - 5), (tx + 24, table_y - 2)])  # far arm, behind the body
+    s.stamp(tx, table_y - 20, typist)
+    s.limb([(tx + 17, table_y - 5), (tx + 26, table_y - 2)], over=True)
+    s.frame(tx + 4, table_y + 1, 14, 3, "N")  # the stool
+    s.frame(tx + 9, table_y + 3, 4, s.floor - table_y - 3, "wood")
+    s.desk(36, table_y, 30, 12)
+    lx = 40
+    s.frame(lx + 10, table_y - 13, 16, 12, "U")
+    s.box(lx + 11, table_y - 12, 14, 10, "t")
+    s.box(lx + 13, table_y - 10, 6, 1, "S")
+    s.box(lx + 17, table_y - 8, 7, 1, "J")
+    s.box(lx + 13, table_y - 6, 8, 1, "S")
+    s.frame(lx + 2, table_y - 2, 24, 3, "U")
+    for i in range(lx + 4, lx + 24, 2):
+        s.put(i, table_y - 1, "M")
+    for x, y in ((tx + 28, table_y - 7), (tx + 30, table_y - 5), (tx + 27, table_y - 10)):
+        s.box(x, y, 2, 1, "T")
+    for bx, by, bw, col in ((38, 7, 13, "S"), (52, 5, 12, "J")):
+        s.frame(bx, by, bw, 5, col)
+        s.box(bx + 1, by + 1, bw - 2, 3, "t")
+        for d in range(3):
+            s.put(bx + 3 + d * 3, by + 2, col)
+        s.put(bx + 2, by + 5, col)
+    out["toc/07-glurp-joins-discord"] = (s, (
+        "Glurp, grinning, leans in on a stool and types fast at a laptop while chat bubbles float up from the screen "
+        "and Ork Bot watches from the rafters."))
+
+    # ---- 08: from behind, seated and still, lit by the ball (back view)
+    s = Scene()
+    tower_wall(s)
+    s.window(8, 4, 14, 16, stars=[(2, 2), (10, 3), (3, 11), (11, 12), (6, 6)])
+    s.moon(15, 7)
+    desk_y = s.floor - 12
+    s.screen(24, desk_y - 17, 18, 15, [(0, 2, S), (3, 9, M), (3, 6, M), (0, 2, S), (0, 1, S)])
+    s.stand(DUCK, 27, floor=desk_y - 17)
+    s.ball(66, 7, base=desk_y)
+    s.stamp(54, desk_y - 6, MUG)
+    s.desk(18, desk_y, 60, 12)
+    gx = 32
+    s.stamp(gx, desk_y - 14, glurp_back(seated=True))
+    for y in range(desk_y - 14, desk_y + 8):  # the ball's light along Glurp's right edge
+        xs = [x for x in range(gx, gx + 24) if s.get(x, y) not in (None, s.empty, "K") and s.get(x, y) not in ("wood", "wood_hi", "wood_dk", "t", "c")]
+        if xs and s.get(xs[-1] + 1, y) == "K":
+            s.put(xs[-1], y, {"G": "S", "D": "L", "H": "J", "Q": "J", "Z": "G"}.get(s.get(xs[-1], y), s.get(xs[-1], y)))
+    s.frame(gx + 1, desk_y + 8, 22, 2, "N")
+    s.frame(gx + 3, desk_y + 9, 3, s.floor - desk_y - 9, "wood")
+    s.frame(gx + 18, desk_y + 9, 3, s.floor - desk_y - 9, "wood")
+    out["toc/08-epilogue"] = (s, (
+        "Seen from behind, Glurp sits at their desk late at night, still and calm, lit by the glowing crystal ball, "
+        "a fresh prompt on the screen and Sir Quackington on the monitor."))
+    return out
+
+
+# --------------------------------------------------------------------------
 # Standalone pose sheet entries (transparent, 8 px cells), for reuse
 # --------------------------------------------------------------------------
 
@@ -1390,8 +1716,9 @@ def build_poses():
 
 def main(dest=None):
     dest = pathlib.Path(dest) if dest else ROOT / "images"
-    (dest / "poses").mkdir(parents=True, exist_ok=True)
-    every = {**plates(), **build_tableaus(), **build_spots(), **build_poses()}
+    for sub in ("poses", "toc"):
+        (dest / sub).mkdir(parents=True, exist_ok=True)
+    every = {**plates(), **build_tableaus(), **build_spots(), **build_poses(), **build_toc()}
     for name, (scene, alt) in every.items():
         (dest / f"{name}.svg").write_text(scene.svg(alt))
         print(name, "|", alt)

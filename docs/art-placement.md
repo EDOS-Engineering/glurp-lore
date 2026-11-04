@@ -67,3 +67,13 @@ celebrating, shrugging, waving, casting with a wand, reading a scroll,
 walking, pointing, typing and asleep at a desk; Glorp with baton raised and
 Glorp shrugging (indigo skin, teal coat, notes always above the head).
 Glurp has no gender: write alt text with they/them.
+
+## Contents cards
+
+Each chapter's card on the contents page has its own tableau in
+`images/toc/<chapter-file-stem>.svg`, painted by `build_toc()` in
+`scripts/make_art.py`, so no two cards share a pose: forging at the
+anvil-keyboard, a close-up over the ball, startled by the swarm, bandaged
+with a leaking pouch, the gauge held aloft, face to face with Glorp, typing
+on a stool, and seen from behind by the light of the ball. A chapter without
+a card tableau falls back to its opening plate.

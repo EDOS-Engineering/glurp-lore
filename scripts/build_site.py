@@ -465,10 +465,15 @@ def cover_page(readme: dict[str, list[Block]], chapters: list[Chapter], tagline:
 def contents_page(readme: dict[str, list[Block]], chapters: list[Chapter]) -> Page:
     cards = []
     for ch in chapters:
-        w, h = svg_size(map_href(ch.image.items[0]))
+        # Each card has its own tableau (images/toc/, painted by make_art.py);
+        # a chapter without one falls back to its opening plate.
+        art = f"images/toc/{ch.slug}.svg"
+        if not (ROOT / art).exists():
+            art = map_href(ch.image.items[0])
+        w, h = svg_size(art)
         cards.append(
             f"""<li><a class="toc-card panel" href="{ch.href}">
-  <img src="{attr(map_href(ch.image.items[0]))}" alt="" width="{w}" height="{h}" decoding="async">
+  <img src="{attr(art)}" alt="" width="{w}" height="{h}" decoding="async">
   <span class="toc-text">{pixel_num(ch.num)}<span class="toc-title"><span class="visually-hidden">Chapter {ch.num}: </span>{inline(ch.title)}</span></span>
 </a></li>"""
         )

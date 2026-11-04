@@ -1,0 +1,62 @@
+{
+  "og/01-the-age-of-hand-forged-code.png": {
+    "page": "01-the-age-of-hand-forged-code.html",
+    "alt": "Glurp, turned three-quarters, raises a hammer over their head to strike a glowing bar of code on an anvil set with keycaps, sparks flying. Beside it: Chapter 1, The Age of Hand-Forged Code.",
+    "inputs": "b601e82e8766d936"
+  },
+  "og/02-the-crystal-ball.png": {
+    "page": "02-the-crystal-ball.html",
+    "alt": "A close-up of Glurp leaning over the crystal ball cupped in both hands, brow raised, its three rings glowing lime in their eyes. Beside it: Chapter 2, The Crystal Ball.",
+    "inputs": "0ceb487efe204160"
+  },
+  "og/03-the-coming-of-the-agents.png": {
+    "page": "03-the-coming-of-the-agents.html",
+    "alt": "Glurp leans back, startled, arms flung up and brow high, as a swarm of small agents rushes in from the left and gold tokens fly from their pocket. Beside it: Chapter 3, The Coming of the Agents.",
+    "inputs": "09a765267ca2b90a"
+  },
+  "og/04-the-five-wounds.png": {
+    "page": "04-the-five-wounds.html",
+    "alt": "Glurp sits on a crate with a bandage round their head and a plaster on their cheek, clutching a torn token pouch while gold tokens leak from it onto the floor. Beside it: Chapter 4, The Five Wounds.",
+    "inputs": "b4922025df943715"
+  },
+  "og/05-finding-the-meter.png": {
+    "page": "05-finding-the-meter.html",
+    "alt": "Glurp stands grinning with both arms high, holding the token gauge aloft as rays of light burst from it. Beside it: Chapter 5, Finding the Meter.",
+    "inputs": "c9508dda04d573b2"
+  },
+  "og/06-the-cousin-who-conducts-the-horde.png": {
+    "page": "06-the-cousin-who-conducts-the-horde.html",
+    "alt": "Glurp points at cousin Glorp's raised baton with a question mark overhead; Glorp, indigo in a teal coat, holds it high and answers with an exclamation mark, music notes above the head. Beside it: Chapter 6, The Cousin Who Conducts the Horde.",
+    "inputs": "bc6cada6f11209aa"
+  },
+  "og/07-glurp-joins-discord.png": {
+    "page": "07-glurp-joins-discord.html",
+    "alt": "Glurp, grinning, leans in on a stool and types fast at a laptop while chat bubbles float up from the screen and Ork Bot watches from the rafters. Beside it: Chapter 7, Glurp Joins Discord.",
+    "inputs": "5acf0f2507840a2a"
+  },
+  "og/08-epilogue.png": {
+    "page": "08-epilogue.html",
+    "alt": "Seen from behind, Glurp sits at their desk late at night, still and calm, lit by the glowing crystal ball, a fresh prompt on the screen and Sir Quackington on the monitor. Beside it: Chapter 8, Epilogue \u2014 By the Light of the Ball.",
+    "inputs": "b126d802af466f70"
+  },
+  "og/contents.png": {
+    "page": "contents.html",
+    "alt": "The eight chapter tableaus of Glurp's story in two rows, over the title Contents.",
+    "inputs": "cb4a6dcb89bc66d7"
+  },
+  "og/glossary.png": {
+    "page": "glossary.html",
+    "alt": "Glurp reads an open scroll held in both hands. Beside them: Glossary of Orkish Developer Terms.",
+    "inputs": "54502841638c2438"
+  },
+  "og/quotes.png": {
+    "page": "quotes.html",
+    "alt": "Glurp shrugs, palms up, one eyebrow raised. Beside them: Glurp-isms.",
+    "inputs": "230550024b537086"
+  },
+  "og/tooltip.png": {
+    "page": "tooltip.html",
+    "alt": "Glurp points to the right, making a point. Beside them: Tooltip.",
+    "inputs": "9263cf0834db3785"
+  }
+}

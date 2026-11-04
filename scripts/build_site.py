@@ -5,8 +5,10 @@ Renders the Markdown in this repository into static HTML under _site/
 (or the directory given with --out). Standard library only.
 
     python3 scripts/build_site.py              # build into _site/
-    python3 scripts/build_site.py --render-og  # also re-render site/og.png
-                                               # with a local headless Chrome
+    python3 scripts/build_site.py --render-og  # also re-render the share cards
+                                               # (site/og.png, site/og/*.png) and
+                                               # PNG icons with a local headless
+                                               # Chrome; commit the results
 
 The Markdown converter covers only the constructs the lore uses:
 headings, paragraphs, emphasis, strong, inline code, links, images,
@@ -16,7 +18,9 @@ fenced code, block quotes, lists, tables, definition lists and rules.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import html
+import json
 import os
 import re
 import shutil
@@ -33,6 +37,12 @@ REPO_URL = "https://github.com/EDOS-Engineering/glurp-lore"
 ORKMETER_URL = "https://orkmeter.com/"
 PLUS_URL = "https://orkmeter.com/billing"
 BOOK_TITLE = "The Lore and History of Glurp"
+PUBLISHER = {"@type": "Organization", "name": "EDOS Engineering", "legalName": "EDOS LLC",
+             "url": "https://github.com/EDOS-Engineering"}
+COVER_ALT = (
+    "Glurp, a green pixel-art ork in a purple hoodie, beside a three-ringed crystal ball, "
+    "under the title The Lore and History of Glurp."
+)
 
 MARK_SVG = (
     '<svg viewBox="0 0 28 28" fill="none"><g class="r1"><path d="M24 14A10 10 0 1 1 14 4" '
@@ -377,6 +387,11 @@ class Page:
     prev: tuple[str, str] | None = None  # (href, label)
     next: tuple[str, str] | None = None
     og_type: str = "article"
+    sources: list[str] = field(default_factory=list)  # files whose history dates the page
+    image: str = "og.png"  # share card under the site root
+    image_alt: str = COVER_ALT
+    image_url: str = ""  # absolute, versioned; set by attach_cards()
+    jsonld: list[dict] = field(default_factory=list)
 
 
 def load_chapters() -> list[Chapter]:
@@ -759,6 +774,12 @@ def layout(page: Page) -> str:
 
     title = html.escape(page.title)
     desc = attr(page.description)
+    jsonld = "".join(
+        '<script type="application/ld+json">'
+        + json.dumps(d, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
+        + "</script>\n"
+        for d in page.jsonld
+    )
     return f"""<!doctype html>
 <html lang="en-GB">
 <head>
@@ -774,13 +795,21 @@ def layout(page: Page) -> str:
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{desc}">
 <meta property="og:url" content="{canonical}">
-<meta property="og:image" content="{BASE_URL}og.png">
+<meta property="og:locale" content="en_GB">
+<meta property="og:image" content="{attr(page.image_url)}">
+<meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Glurp, a green pixel-art ork in a purple hoodie, beside a three-ringed crystal ball, under the title The Lore and History of Glurp.">
+<meta property="og:image:alt" content="{attr(page.image_alt)}">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{title}">
+<meta name="twitter:description" content="{desc}">
+<meta name="twitter:image" content="{attr(page.image_url)}">
+<meta name="twitter:image:alt" content="{attr(page.image_alt)}">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="preload" href="fonts/silkscreen-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" href="icon-512.png" type="image/png" sizes="512x512">
+<link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">
+{jsonld}<link rel="preload" href="fonts/silkscreen-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="style.css">
 {head_links}<script src="site.js" defer></script>
@@ -858,10 +887,25 @@ def find_chrome() -> str | None:
     return None
 
 
+def screenshot(chrome: str, page: Path, target: Path, width: int, height: int) -> None:
+    subprocess.run(
+        [
+            chrome, "--headless=new", "--disable-gpu", "--hide-scrollbars",
+            "--force-device-scale-factor=1", f"--window-size={width},{height}",
+            "--default-background-color=00000000",
+            f"--screenshot={target}", page.as_uri(),
+        ],
+        check=True,
+        capture_output=True,
+    )
+
+
 def render_og() -> None:
     chrome = find_chrome()
     if not chrome:
         sys.exit("render-og: no Chrome found (set CHROME=/path/to/chrome)")
+    render_cards(chrome)
+    render_icons(chrome)
     with tempfile.TemporaryDirectory() as tmp:
         card = Path(tmp) / "og.html"
         card.write_text(
@@ -882,6 +926,173 @@ def render_og() -> None:
             capture_output=True,
         )
     print(f"wrote {target.relative_to(ROOT)}")
+
+
+# --------------------------------------------------------------------------
+# Share cards: one 1200x630 PNG per page
+# --------------------------------------------------------------------------
+#
+# Link unfurlers (Discord, Slack, X, LinkedIn) only show raster og:images, so
+# each page's card is painted from the existing pixel art with headless
+# Chrome (--render-og) and committed under site/og/. The build only reads the
+# PNGs: it versions their URLs with a content hash, and warns when a card's
+# inputs (title, art, template) changed since it was last rendered.
+# The cover keeps site/og.png.
+
+OG_DIR = SITE_ASSETS / "og"
+CARDS_JSON = OG_DIR / "cards.json"
+
+CARD_HTML = """<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{{font-family:Silkscreen;font-weight:400;src:url({fonts}/silkscreen-400.woff2) format("woff2")}}
+@font-face{{font-family:JBM;font-weight:500;src:url({fonts}/jetbrains-mono-500.woff2) format("woff2")}}
+html,body{{margin:0;width:1200px;height:630px;overflow:hidden;background:#101412}}
+.card{{position:absolute;inset:28px;background:#171d19;border:6px solid #0d120e;box-shadow:10px 10px 0 #0d120e;display:flex;align-items:center;gap:36px;padding:0 36px 12px}}
+.frame{{flex:none;box-sizing:content-box;width:640px;height:384px;border:6px solid #0d120e;background:#1c241f;display:grid;place-items:center;overflow:hidden}}
+.frame img{{display:block;image-rendering:pixelated}}
+.text{{display:flex;flex-direction:column;gap:18px;min-width:0}}
+.kicker{{margin:0;font:500 19px JBM,monospace;color:#c4f58a;letter-spacing:.06em;text-transform:uppercase}}
+.num{{margin:0;font:400 88px/.8 Silkscreen,monospace;color:#c4f58a}}
+h1{{margin:0;font:400 {size}px/1.12 Silkscreen,monospace;color:#edf3e9;letter-spacing:-.04em;overflow-wrap:break-word}}
+h1 span{{color:#c4f58a}}
+.line{{margin:0;font:500 19px/1.4 JBM,monospace;color:#c9d4c6}}
+.grid{{display:grid;grid-template-columns:repeat(4,240px);gap:14px}}
+.grid img{{display:block;width:240px;height:144px;image-rendering:pixelated;border:5px solid #0d120e}}
+.stack{{flex-direction:column;justify-content:center;gap:22px;padding-bottom:44px}}
+.stack .text{{align-items:center;text-align:center;gap:10px}}
+.foot{{position:absolute;left:36px;right:30px;bottom:16px;display:flex;justify-content:space-between;font:500 17px JBM,monospace;color:#a2afa4}}
+.foot b{{font:400 17px Silkscreen,monospace;color:#a2afa4;letter-spacing:-.02em}}
+</style></head><body><div class="card{cls}">{art}<div class="text">{text}</div>
+<div class="foot"><b>The Lore and History of Glurp</b><span>lore.orkmeter.com</span></div></div></body></html>"""
+
+ICON_HTML = """<!doctype html><html><head><meta charset="utf-8"><style>
+html,body{{margin:0;width:{s}px;height:{s}px;overflow:hidden;background:#101412}}
+img{{position:absolute;inset:{pad}px;width:{inner}px;height:{inner}px}}
+</style></head><body><img src="{mark}" alt=""></body></html>"""
+ICONS = {"apple-touch-icon.png": 180, "icon-512.png": 512}
+
+
+@dataclass
+class Card:
+    file: str  # under site/, e.g. "og/glossary.png"
+    page: str  # the page it is for, e.g. "glossary.html"
+    kicker: str
+    title: str
+    alt: str
+    art: list[str]  # image paths under the repository root
+    scale: float = 1.0  # for a single picture inside the frame
+    num: int | None = None
+    line: str = ""
+
+
+def svg_title(src: str) -> str:
+    m = re.search(r"<title[^>]*>([^<]*)</title>", (ROOT / src).read_text(encoding="utf-8"))
+    return html.unescape(m.group(1)).strip() if m else ""
+
+
+def md_title(src: str) -> str:
+    return plain(parse((ROOT / src).read_text(encoding="utf-8"))[0].text)
+
+
+def share_cards(chapters: list[Chapter]) -> list[Card]:
+    cards = []
+    for ch in chapters:
+        art = f"images/toc/{ch.slug}.svg"
+        if not (ROOT / art).exists():
+            art = map_href(ch.image.items[0]).lstrip("./")
+        cards.append(
+            Card(
+                f"og/{ch.slug}.png", ch.href, f"Chapter {ch.num} of {len(chapters)}",
+                plain(ch.title),
+                f"{svg_title(art)} Beside it: Chapter {ch.num}, {plain(ch.title)}.",
+                [art], num=ch.num,
+            )
+        )
+    toc = [f"images/toc/{ch.slug}.svg" for ch in chapters]
+    cards.append(
+        Card(
+            "og/contents.png", "contents.html", "Table of contents", "Contents",
+            "The eight chapter tableaus of Glurp's story in two rows, over the title Contents.",
+            [t for t in toc if (ROOT / t).exists()][:8],
+            line=f"{len(chapters)} chapters · a glossary · a book of quotes",
+        )
+    )
+    for page, src, kicker, art, line in (
+        ("glossary.html", "glossary.md", "Glossary", "images/poses/glurp-read.svg", ""),
+        ("quotes.html", "quotes.md", "Quotes", "images/poses/glurp-shrug.svg",
+         "“Oi, where'd all me tokens go?”"),
+        ("tooltip.html", "tooltip.md", "From orkmeter.com", "images/poses/glurp-point.svg", ""),
+    ):
+        title = md_title(src)
+        cards.append(
+            Card(
+                f"og/{Path(page).stem}.png", page, kicker, title,
+                f"{svg_title(art)} Beside them: {title}.", [art], scale=1.5, line=line,
+            )
+        )
+    return cards
+
+
+def card_html(card: Card) -> str:
+    def img(src: str, w: int, h: int, cls: str = "") -> str:
+        return f'<img src="{(ROOT / src).as_uri()}" width="{w}" height="{h}" alt=""{cls}>'
+
+    text = f'<p class="kicker">{html.escape(card.kicker)}</p>'
+    if len(card.art) > 1:
+        art = '<div class="grid">' + "".join(img(a, 240, 144) for a in card.art) + "</div>"
+        cls, size = " stack", 64
+    else:
+        w, h = svg_size(card.art[0])
+        art = f'<div class="frame">{img(card.art[0], round(w * card.scale), round(h * card.scale))}</div>'
+        cls = ""
+        longest = max(len(w) for w in card.title.split())
+        size = 40 if longest <= 9 and len(card.title) <= 40 else 34
+        if card.num is not None:
+            text = f'<p class="num">{card.num:02d}</p>' + text
+    title = html.escape(card.title).replace("Glurp", "<span>Glurp</span>")
+    text += f"<h1 style=\"font-size:{size}px\">{title}</h1>"
+    if card.line:
+        text += f'<p class="line">{html.escape(card.line)}</p>'
+    return CARD_HTML.format(fonts=(SITE_ASSETS / "fonts").as_uri(), cls=cls, art=art, text=text, size=size)
+
+
+def card_inputs(card: Card) -> str:
+    """A fingerprint of everything a card is painted from."""
+    h = hashlib.sha256(CARD_HTML.encode())
+    for part in (card.kicker, card.title, card.line, str(card.scale), str(card.num)):
+        h.update(part.encode() + b"\0")
+    for a in card.art:
+        h.update((ROOT / a).read_bytes())
+    return h.hexdigest()[:16]
+
+
+def render_cards(chrome: str) -> None:
+    cards = share_cards(load_chapters())
+    OG_DIR.mkdir(exist_ok=True)
+    record = {}
+    with tempfile.TemporaryDirectory() as tmp:
+        for card in cards:
+            page = Path(tmp) / "card.html"
+            page.write_text(card_html(card), encoding="utf-8")
+            screenshot(chrome, page, SITE_ASSETS / card.file, 1200, 630)
+            record[card.file] = {"page": card.page, "alt": card.alt, "inputs": card_inputs(card)}
+            print(f"wrote site/{card.file}")
+    for stale in set(p.name for p in OG_DIR.glob("*.png")) - {Path(c.file).name for c in cards}:
+        (OG_DIR / stale).unlink()
+    CARDS_JSON.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
+
+
+def render_icons(chrome: str) -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        for name, size in ICONS.items():
+            pad = round(size * 0.14)
+            page = Path(tmp) / "icon.html"
+            page.write_text(
+                ICON_HTML.format(s=size, pad=pad, inner=size - 2 * pad,
+                                 mark=(SITE_ASSETS / "favicon.svg").as_uri()),
+                encoding="utf-8",
+            )
+            screenshot(chrome, page, SITE_ASSETS / name, size, size)
+            print(f"wrote site/{name}")
 
 
 # --------------------------------------------------------------------------
@@ -944,6 +1155,15 @@ def build(out: Path) -> None:
         )
     )
 
+    for page, srcs in zip(pages, [["README.md", "tooltip.md"], ["README.md"]]):
+        page.sources = srcs
+    for page in pages:
+        if not page.sources:
+            src = f"chapters/{page.path[:-5]}.md"
+            page.sources = [src if (ROOT / src).exists() else page.path[:-5] + ".md"]
+    attach_cards(pages, chapters)
+    add_structured_data(pages, chapters)
+
     if out.exists():
         shutil.rmtree(out)
     out.mkdir(parents=True)
@@ -953,9 +1173,13 @@ def build(out: Path) -> None:
     for item in SITE_ASSETS.iterdir():
         dest = out / item.name
         if item.is_dir():
-            shutil.copytree(item, dest)
+            shutil.copytree(item, dest, ignore=shutil.ignore_patterns("cards.json"))
         else:
             shutil.copy2(item, dest)
+    (out / "robots.txt").write_text(
+        f"User-agent: *\nAllow: /\n\nSitemap: {BASE_URL}sitemap.xml\n", encoding="utf-8"
+    )
+    (out / "sitemap.xml").write_text(sitemap(pages), encoding="utf-8")
     (out / "CNAME").write_text("lore.orkmeter.com\n", encoding="utf-8")
     (out / ".nojekyll").write_text("", encoding="utf-8")
     print(f"built {len(pages)} pages into {out}")
@@ -967,6 +1191,124 @@ def build(out: Path) -> None:
     for x in isms:
         if not x.chapter:
             print(f"  unrecorded: {plain(' '.join(x.quote.items))}")
+
+
+def page_url(path: str) -> str:
+    return BASE_URL + ("" if path == "index.html" else path)
+
+
+def asset_url(name: str) -> str:
+    """Absolute URL with a content-hash query, so unfurlers refetch on change."""
+    digest = hashlib.sha256((SITE_ASSETS / name).read_bytes()).hexdigest()[:8]
+    return f"{BASE_URL}{name}?v={digest}"
+
+
+def attach_cards(pages: list[Page], chapters: list[Chapter]) -> None:
+    record = json.loads(CARDS_JSON.read_text(encoding="utf-8")) if CARDS_JSON.exists() else {}
+    cards = {c.page: c for c in share_cards(chapters)}
+    for page in pages:
+        card = cards.get(page.path)
+        if card and (SITE_ASSETS / card.file).exists():
+            page.image, page.image_alt = card.file, card.alt
+            if record.get(card.file, {}).get("inputs") != card_inputs(card):
+                print(f"warning: site/{card.file} is stale; run build_site.py --render-og")
+        elif card:
+            print(f"warning: no share card for {page.path}; run build_site.py --render-og")
+        page.image_url = asset_url(page.image)
+
+
+def add_structured_data(pages: list[Page], chapters: list[Chapter]) -> None:
+    book_id = BASE_URL + "#book"
+    by_path = {p.path: p for p in pages}
+    cover = by_path["index.html"]
+
+    def name(page: Page) -> str:
+        return page.title.removesuffix(f" · {BOOK_TITLE}")
+
+    def chapter_ld(ch: Chapter, full: bool) -> dict:
+        page = by_path[ch.href]
+        d = {"@context": "https://schema.org"} if full else {}
+        d |= {"@type": "Chapter", "@id": page_url(ch.href) + "#chapter", "name": plain(ch.title),
+             "position": ch.num, "url": page_url(ch.href)}
+        if full:
+            d.update({
+                "headline": f"Chapter {ch.num}: {plain(ch.title)}",
+                "description": page.description,
+                "image": page.image_url,
+                "inLanguage": "en-GB",
+                "author": PUBLISHER,
+                "isPartOf": {"@type": "Book", "@id": book_id, "name": BOOK_TITLE, "url": BASE_URL},
+            })
+        return d
+
+    cover.jsonld.append({
+        "@context": "https://schema.org",
+        "@type": "Book",
+        "@id": book_id,
+        "name": BOOK_TITLE,
+        "description": cover.description,
+        "url": BASE_URL,
+        "image": cover.image_url,
+        "inLanguage": "en-GB",
+        "bookFormat": "https://schema.org/EBook",
+        "genre": "Fantasy",
+        "author": PUBLISHER,
+        "publisher": PUBLISHER,
+        "copyrightHolder": {"@type": "Organization", "name": "EDOS LLC"},
+        "copyrightYear": 2026,
+        "license": "https://creativecommons.org/licenses/by/4.0/",
+        "character": {"@type": "Person", "name": "Glurp"},
+        "hasPart": [chapter_ld(ch, False) for ch in chapters],
+    })
+    for ch in chapters:
+        by_path[ch.href].jsonld.append(chapter_ld(ch, True))
+    for page in pages:
+        if page.path == "index.html":
+            continue
+        trail = [("Cover", "index.html")]
+        if page.path in {ch.href for ch in chapters}:
+            trail.append(("Contents", "contents.html"))
+        trail.append((name(page), page.path))
+        page.jsonld.append({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {"@type": "ListItem", "position": i, "name": n, "item": page_url(p)}
+                for i, (n, p) in enumerate(trail, 1)
+            ],
+        })
+
+
+def git_lastmod(paths: list[str]) -> str | None:
+    """Date of the last commit touching any of paths, or None outside git.
+
+    A shallow clone only knows its tip, so every page gets the tip's date there.
+    """
+    try:
+        out = subprocess.run(
+            ["git", "log", "-1", "--format=%cs", "--", *paths],
+            cwd=ROOT, capture_output=True, text=True, check=True,
+        ).stdout.strip()
+    except (OSError, subprocess.CalledProcessError):
+        return None
+    return out or None
+
+
+def sitemap(pages: list[Page]) -> str:
+    rows = []
+    for page in pages:
+        lastmod = git_lastmod(page.sources)
+        rows.append(
+            f"  <url><loc>{html.escape(page_url(page.path))}</loc>"
+            + (f"<lastmod>{lastmod}</lastmod>" if lastmod else "")
+            + "</url>"
+        )
+    return (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        + "\n".join(rows)
+        + "\n</urlset>\n"
+    )
 
 
 def main() -> None:

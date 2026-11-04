@@ -4,7 +4,7 @@ name: Deploy
 # EDOS-Labs (infra/lore-site.yaml, stack glurp-lore-site in us-east-1).
 # The role, bucket and distribution come from repository variables set
 # from that stack's outputs. No job environment: the role trusts the OIDC
-# subject repo:EDOS-Engineering/glurp-lore:ref:refs/heads/main.
+# subject repo:EDOS-Engineering@155857438/glurp-lore@1446009821:ref:refs/heads/main.
 
 on:
   push:

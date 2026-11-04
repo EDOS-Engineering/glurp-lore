@@ -9,9 +9,12 @@ Parameters:
   DomainName:
     Type: String
     Default: lore.orkmeter.com
-  GitHubRepo:
+  GitHubSubjectPrefix:
     Type: String
-    Default: EDOS-Engineering/glurp-lore
+    Default: repo:EDOS-Engineering@155857438/glurp-lore@1446009821
+    Description: >-
+      The repository's immutable OIDC subject prefix (owner and repository
+      with their numeric IDs), as GitHub issues it for glurp-lore.
   WithDomain:
     Type: String
     AllowedValues: ["true", "false"]
@@ -158,7 +161,7 @@ Resources:
             Condition:
               StringEquals:
                 token.actions.githubusercontent.com:aud: sts.amazonaws.com
-                token.actions.githubusercontent.com:sub: !Sub "repo:${GitHubRepo}:ref:refs/heads/main"
+                token.actions.githubusercontent.com:sub: !Sub "${GitHubSubjectPrefix}:ref:refs/heads/main"
       Policies:
         - PolicyName: publish
           PolicyDocument:

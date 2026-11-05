@@ -851,7 +851,7 @@ def layout(page: Page) -> str:
       <a href="tooltip.html">Tooltip</a>
       <a href="{REPO_URL}" rel="noopener">Source on GitHub</a>
     </nav>
-    <p class="legal">Text © 2026 EDOS LLC, licensed <a href="{REPO_URL}/blob/main/LICENSE" rel="noopener">CC BY 4.0</a>. Ork Meter, Ork Meter Plus, Ork Bot, Orkestera, EDOS, the three-ring mark and the Glurp character are trademarks of EDOS LLC.</p>
+    <p class="legal">Text © 2026 EDOS LLC, licensed <a href="{REPO_URL}/blob/main/LICENSE" rel="noopener">CC BY 4.0</a>. Artwork, the three-ring mark and the Glurp character design © 2026 EDOS LLC, all rights reserved.</p>
   </div>
 </footer>
 </body>

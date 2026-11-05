@@ -36,7 +36,7 @@ Also in this repository:
 - [Quotes](quotes.md): Glurp-isms, collected
 - [Tooltip](tooltip.md): the canonical one-liner used on orkmeter.com
 - [Contributing](CONTRIBUTING.md): fan lore is welcome
-- [License](LICENSE): CC BY 4.0 for the text; brand assets reserved
+- [License](LICENSE): CC BY 4.0 for the text; artwork and character design © EDOS LLC, all rights reserved
 
 ## The world, briefly
 
